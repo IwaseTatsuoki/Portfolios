@@ -11,26 +11,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <link rel="stylesheet" href="style.css">
 <title>Insert title here</title>
 </head>
 <body>
 
-	<h2>在庫管理システム</h2>
-
-	<%
+<%
 		if (erroMess != null) {
 
 			out.print(erroMess);
+
 		}
 	%>
 
-	<a href="shippingInput.jsp">出荷処理</a>
+	<main>
 
-	<a href="Arrival.jsp">入荷処理</a>
+	<h2>在庫管理システム</h2>
 
-	<a href="InventoryListServlet">在庫一覧</a>
 
-	<a href="ReturnServlet">返品</a>
+        <ul>
+
+            <li><a href="shippingInput.jsp">出荷処理</a></li>
+
+            <li><a href="Arrival.jsp">入荷処理</a></li>
+
+            <li><a href="InventoryListServlet">在庫一覧</a></li>
+
+            <li><a href="ReturnServlet">返品</a></li>
+
+        </ul>
+
+    </main>
 
 </body>
 </html>
