@@ -15,7 +15,7 @@ function addForm() {
     var input_data = document.createElement('input');
     input_data.type = 'text';
     input_data.id = 'text_' + i;
-    input_data.name = 'itemCode_' + i;
+    input_data.name = 'itemCode';
     input_data.placeholder = '商品コード';
     input_data.style = 'margin-right: 5px;';
     var parent = document.getElementById('li_' + i);
@@ -25,8 +25,8 @@ function addForm() {
     var input_num = document.createElement('input');
     input_num.type = 'number';
     input_num.id = 'num_' + i;
-    input_num.name = 'shippingCount_' + i;
-    input_num.placeholder = '出荷数';
+    input_num.name = 'itemCount';
+    input_num.placeholder = '個数';
     input_num.style = 'margin-right: 5px;';
     input_num.min = 1;
     input_num.step = 1;

@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.List;
 
+import bean.ItemBean;
+
 public class ShippingExecute  {
 
-	public void inventoryUpdate (Connection con, PreparedStatement ps, List<InputBean> inputBeanList, String sender)
+	public void inventoryUpdate (Connection con, PreparedStatement ps, List<ItemBean> inputBeanList, String sender)
 			throws Exception {
 
 		int[] resArray = new int[inputBeanList.size()];
@@ -116,7 +118,7 @@ public class ShippingExecute  {
 		}
 	}
 
-	public void slipItemListInsert(Connection con, PreparedStatement ps, String maxSlipCode, List<InputBean> inputBeanList)
+	public void slipItemListInsert(Connection con, PreparedStatement ps, String maxSlipCode, List<ItemBean> inputBeanList)
 			throws Exception{
 
 		int[] resArray = new int[inputBeanList.size()];

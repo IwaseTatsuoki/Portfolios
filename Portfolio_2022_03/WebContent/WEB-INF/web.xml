@@ -19,4 +19,14 @@
     <servlet-name>ShippingInputServlet</servlet-name>
     <url-pattern>/ShippingInputServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ArrivalInputServlet</display-name>
+    <servlet-name>ArrivalInputServlet</servlet-name>
+    <servlet-class>controller.ArrivalInputServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArrivalInputServlet</servlet-name>
+    <url-pattern>/ArrivalInputServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

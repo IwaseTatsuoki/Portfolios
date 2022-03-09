@@ -11,19 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bean.ItemBean;
-import model.ShippingDAO;
+import inventoryEnum.ErroMesEnum;
+import model.ArraivalDAO;
 import model.SqlException;
 
 /**
- * Servlet implementation class ShippingServlet
+ * Servlet implementation class ArrivalInputServlet
  */
-public class ShippingInputServlet extends HttpServlet {
+public class ArrivalInputServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ShippingInputServlet() {
+	public ArrivalInputServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -40,47 +41,64 @@ public class ShippingInputServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		request.setCharacterEncoding("UTF-8");
 
 		//画面遷移URL
 		String url = "index.jsp";
 
-		//送り元店舗と送り先店舗を取得
-		String sender = request.getParameter("sender");
-		String sendingAddress = request.getParameter("sendingAddress");
-
-		//受け取った値をinputBeanにいれる（商品コードと出荷数）
-		//そのBeanをListにいれる
-		List<ItemBean> slipItemBeanList = new LinkedList<ItemBean>();
+		//比較する伝票コードを取得
+		String slipCode = request.getParameter("slipCode");
 
 
+		//受け取った値をBeanにいれる（商品コードと出荷数）
+		//入荷した商品のリスト
+		List<ItemBean> arraivalItemBeanList = new LinkedList<ItemBean>();
+
+		//入荷の画面で入力した商品コードと個数を配列で取得
 		String[] itemCode = request.getParameterValues("itemCode" );
 		String[] itemCount = request.getParameterValues("itemCount" );
 
-		//ブランクは入る
+		//itemcodeとitemCountは同じ数なのでどちらかの数だけ回す
 		for (int i = 0; i < itemCount.length; i++) {
 
-
+			//nullと空文字じゃない場合beanを生成しリストに加える
+			//ブランクは入るがDBに登録する前にBeanの中身がDBに登録されているか確認するので問題ない
 			if (itemCode[i] != null && !itemCode[i].isEmpty() && itemCount[i] != null && !itemCount[i].isEmpty()) {
 
 				ItemBean inputBean = new ItemBean(itemCode[i], Integer.parseInt(itemCount[i]));
 
-				slipItemBeanList.add(inputBean);
+				arraivalItemBeanList.add(inputBean);
 			}
 		}
 
 
-		ShippingDAO shippingDAO = new ShippingDAO();
+		ArraivalDAO arraivalDAO = new ArraivalDAO();
 
 		try {
 
-			//DB更新、追加
-			shippingDAO.shippingDB(slipItemBeanList,sender,sendingAddress);
+			//入荷時のDB操作を一括で行う
+			boolean arraivalResult =  arraivalDAO.arraivalDB(slipCode, arraivalItemBeanList);
+
+			//入荷した商品と出荷伝票に差異があればfalseがかえってくる
+			if(!arraivalResult) {
+
+				url = "arraivalInput.jsp";
+				request.setAttribute("erroMess", ErroMesEnum.ARRAIVALMISMATCH.getMes());
+
+			}else {
+
+				request.setAttribute("erroMess", "成功");
+			}
 
 		}catch (SqlException e) {
 
 			// エラー内容表示
 			e.printStackTrace();
+			e.getMessage();
+
+			//エラー遷移先はとりあえず全部index.jsp
+			url = e.getERRORURL();
 
 			//エラーメッセージを渡す
 			request.setAttribute("erroMess", e.getERRORMESS());

@@ -13,17 +13,9 @@ import bean.ItemBean;
 import inventoryEnum.ErroMesEnum;
 import util.DButil;
 
+public class ArraivalDAO {
 
-public class ShippingDAO {
-
-	public void shippingDB(List<ItemBean> slipItemBeanList, String sender, String sendingAddress)
-			throws SqlException {
-
-		//sqlを実行するのに使うクラス
-		ShippingExecute shippingExecute = new ShippingExecute();
-
-		//slip_codeの最大値の数字を入れる
-		String maxSlipCode = null;
+	public boolean arraivalDB(String slipCode, List<ItemBean> arraivalItemBeanList) throws SqlException {
 
 		//DB取得結果を格納するリスト
 		Connection con = null;
@@ -42,24 +34,32 @@ public class ShippingDAO {
 			//オートコミット無効
 			con.setAutoCommit(false);
 
-			//inventoryの在庫数と未確定在庫を更新
-			shippingExecute.inventoryUpdate(con, ps, slipItemBeanList, sender);
+			//伝票の商品コードと商品数を取得
+			List<ItemBean> slipItemBeanList = ArraivalExcute.getSlipList(con, ps, rs, slipCode);
 
-			//伝票の連番を取得
-			maxSlipCode = shippingExecute.getMaxSlipCode(con, ps, rs);
+			//slipItemBeanListが入荷で入力したものと一致しているか確認
+			boolean arraivalMatch = ArraivalMatch.checkMatch(slipItemBeanList, arraivalItemBeanList);
 
-//
-			shippingExecute.shippingSlipInsert(con, ps, maxSlipCode, sender, sendingAddress);
+			if(!arraivalMatch) {
+				return false;
+			}
 
+			//inventoryのshipment_pendingを入荷確定した分減らす
+			ArraivalExcute.shipmentPendingUpdate(con, ps, slipCode, arraivalItemBeanList);
 
-			shippingExecute.slipItemListInsert(con, ps, maxSlipCode, slipItemBeanList);
+			//inventoryの在庫を増やす
+			ArraivalExcute.inventoryCountUpdate(con, ps, slipCode, arraivalItemBeanList);
+
+			//伝票の確定フラグを立てる
+			ArraivalExcute.shippingShipDecision(con, ps, slipCode);
 
 			con.commit();
 
+			return true;
 
 		}catch(Exception ex){
 
-
+			//DB登録中にエラーが出ればロールバック
 			DButil.rollback(con);
 
 			SqlException sqlException = new SqlException(ErroMesEnum.DBERRORMES.getMes());
@@ -72,10 +72,10 @@ public class ShippingDAO {
 		}finally{
 
 			DButil.closeDB(rs, ps, con);
+
 		}
 
 
 	}
-
 
 }
