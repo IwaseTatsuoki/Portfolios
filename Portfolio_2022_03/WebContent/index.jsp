@@ -36,9 +36,9 @@
 
 		<li><a href="arraivalInput.jsp">入荷処理</a></li>
 
-		<li><a href="InventoryListServlet">在庫一覧</a></li>
+		<li><a href="StoreListServlet">在庫一覧</a></li>
 
-		<li><a href="ReturnServlet">返品</a></li>
+		<li><a href="slipList.jsp">返品</a></li>
 
 	</ul>
 

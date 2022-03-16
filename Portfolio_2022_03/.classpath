@@ -14,5 +14,8 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/pleiades-2021-06-java-win-64bit-jre_20210629/pleiades/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/jackson/jackson-annotations-2.13.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/jackson/jackson-core-2.13.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/jackson/jackson-databind-2.13.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

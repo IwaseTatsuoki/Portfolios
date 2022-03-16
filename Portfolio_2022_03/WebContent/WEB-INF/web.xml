@@ -29,4 +29,34 @@
     <servlet-name>ArrivalInputServlet</servlet-name>
     <url-pattern>/ArrivalInputServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>StoreListServlet</display-name>
+    <servlet-name>StoreListServlet</servlet-name>
+    <servlet-class>controller.StoreListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StoreListServlet</servlet-name>
+    <url-pattern>/StoreListServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>InventoryListServlet</display-name>
+    <servlet-name>InventoryListServlet</servlet-name>
+    <servlet-class>controller.InventoryListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InventoryListServlet</servlet-name>
+    <url-pattern>/InventoryListServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SlipListServlet</display-name>
+    <servlet-name>SlipListServlet</servlet-name>
+    <servlet-class>controller.SlipListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SlipListServlet</servlet-name>
+    <url-pattern>/SlipListServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

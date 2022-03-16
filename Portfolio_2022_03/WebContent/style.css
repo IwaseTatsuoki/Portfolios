@@ -1,43 +1,55 @@
 /* 全体 */
 main {
-    text-align: center;
+	text-align: center;
 }
 
 /* indexのリスト中央ぞろえ */
 ul {
-    text-align: left;
-    float: left;
-    position: relative;
-    left: 50%;
+	text-align: left;
+	float: left;
+	position: relative;
+	left: 50%;
 }
 
 li {
-    list-style: none;
-    position: relative;
-    left: -130%;
-    padding: 10px 0;
+	list-style: none;
+	position: relative;
+	left: -130%;
+	padding: 10px 0;
 }
 
 /* shipping.jsp */
 
 /* 送り元送り先入力エリア */
 .sendInputArea {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 #form_ul li {
-    position: relative;
-    left: -50%;
-    padding: 10px 0;
+	position: relative;
+	left: -50%;
+	padding: 10px 0;
 }
 
 .under_area {
-    clear: both;
-    margin-bottom: 20px;
+	clear: both;
+	margin-bottom: 20px;
 }
 
 /* 商品入力フォーム */
 #form_area input {
-    margin-right: 5px;
-    margin-bottom: 10px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+}
+
+/* inventoryList */
+.inventoryListTable {
+	margin: auto;
+	border-collapse: collapse;
+}
+
+.inventoryListTable table, td, th {
+	border-bottom: 1px solid black;
+	width: 150px;
+	height: 70px;
 }
