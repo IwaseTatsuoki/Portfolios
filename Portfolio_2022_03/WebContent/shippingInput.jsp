@@ -7,45 +7,43 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<main>
 
-	<h3>出荷処理</h3>
+	<div class="centerMain">
 
-	<form action="ShippingInputServlet" method="post">
+		<h3>出荷処理</h3>
 
-		<div class="sendInputArea">
-			送り元コード
-			<input type="text" name="sender">
-			→ 送り先コード
-			<input type="text" name="sendingAddress">
-			<br>
-		</div>
+		<form action="ShippingInputServlet" method="post">
 
-		<!-- 入力数がゼロにならないように一つは消さない -->
+			<div class="sendInputArea">
+				送り元コード
+				<input type="text" name="sender">
+				→ 送り先コード
+				<input type="text" name="sendingAddress">
+				<br>
+			</div>
+
+			<!-- 入力数がゼロにならないように一つは消さない -->
 
 
-		<ul id="form_ul">
+			<ul id="formUl">
 
-			<li class="form_li">
+				<li class="formLi"><input type="text" name="itemCode" placeholder='商品コード'> <input type="number" name="itemCount" placeholder='出荷数' min="1" step="1"></li>
 
-				<input type="text" name="itemCode" placeholder='商品コード'>
+			</ul>
 
-				<input type="number" name="itemCount" placeholder='出荷数' min="1" step="1">
+			<div class="underArea">
 
-			</li>
+				<input type="button" value="入力商品追加" onclick="addForm()">
 
-		</ul>
+				<input type="submit" value="確認" onclick="return confi()">
 
-		<div class="under_area">
+			</div>
 
-			<input type="button" value="入力商品追加" onclick="addForm()">
+		</form>
 
-			<input type="submit" value="確認" onclick="return confi()">
+		<a href="index.jsp">トップページ</a>
+		<script src="inventorymanagement.js"></script>
 
-		</div>
-
-	</form>
-
-	<a href="index.jsp">トップページ</a> <script src="inventorymanagement.js"></script> </main>
+	</div>
 </body>
 </html>

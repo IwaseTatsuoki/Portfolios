@@ -59,4 +59,14 @@
     <servlet-name>SlipListServlet</servlet-name>
     <url-pattern>/SlipListServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SlipDeleteServlet</display-name>
+    <servlet-name>SlipDeleteServlet</servlet-name>
+    <servlet-class>controller.SlipCancelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SlipDeleteServlet</servlet-name>
+    <url-pattern>/SlipDeleteServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -3,6 +3,7 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -97,11 +98,15 @@ public class InventoryDAO {
 			//オートコミット無効
 			con.setAutoCommit(false);
 
-			String sql = "SELECT item.item_name,item.price,size.size_type, color.color_type, inventory.inventory_count, "
-					+ "inventory.shipment_pending " +
-					"FROM item INNER JOIN inventory ON inventory.item_code = item.item_code " +
+			String sql = "SELECT item. item_name, item.price,size.size_type, color.color_type,item.best_before, "+
+					"inventory.inventory_count, inventory.shipment_pending, "+
+					"category.category_type, sex.sex_type " +
+					"FROM item "+
+					"INNER JOIN inventory ON inventory.item_code = item.item_code " +
 					"INNER JOIN size ON item.size = size.size_code " +
 					"INNER JOIN color ON item.color = color.color_code " +
+					"INNER JOIN category ON item.category_code = category.category_code " +
+					"INNER JOIN sex ON item.sex_code = sex.sex_code " +
 					"WHERE store_code = ?";
 
 			ps = con.prepareStatement(sql);
@@ -112,13 +117,18 @@ public class InventoryDAO {
 
 			while(rs.next()) {
 
+				String slipDate = new SimpleDateFormat("yyyy年MM月dd日").format(rs.getDate("best_before"));
+
 				InventoryBean inventoryBean = new InventoryBean(
 						rs.getString("item_name"),
 						rs.getInt("price"),
 						rs.getString("size_type"),
 						rs.getString("color_type"),
 						rs.getInt("inventory_count"),
-						rs.getInt("shipment_pending")
+						rs.getInt("shipment_pending"),
+						rs.getString("category_type"),
+						rs.getString("sex_type"),
+						slipDate
 						);
 
 				inventoryBeanList.add(inventoryBean);

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -9,7 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import bean.InventoryBean;
+import inventoryEnum.ErroMesEnum;
 import model.InventoryDAO;
 import model.SqlException;
 
@@ -32,7 +37,14 @@ public class InventoryListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String url = "inventoryList.jsp";
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String url = "index.jsp" ;
 
 		String storeCode = request.getParameter("storeCode");
 
@@ -42,7 +54,23 @@ public class InventoryListServlet extends HttpServlet {
 
 			List<InventoryBean> inventoryBeanList = inventoryDAO.getInventoryList(storeCode);
 
-			request.setAttribute("inventoryBeanList", inventoryBeanList);
+			// JSON変換用のクラス
+			ObjectMapper mapper = new ObjectMapper();
+
+			//JSON文字列に変換
+			String json = mapper.writeValueAsString(inventoryBeanList);
+
+			//ヘッダ設定
+			response.setContentType("application/json;charset=UTF-8");   //JSON形式, UTF-8
+
+			//pwオブジェクト
+			PrintWriter pw = response.getWriter();
+
+			//出力
+			pw.write(json);
+
+			//クローズ
+			pw.close();
 
 		} catch (SqlException e) {
 
@@ -54,19 +82,21 @@ public class InventoryListServlet extends HttpServlet {
 
 			url = e.getERRORURL();
 
+			RequestDispatcher rd = request.getRequestDispatcher(url);
+			rd.forward(request, response);
+
+		}catch (JsonProcessingException e) {
+			e.printStackTrace();
+			e.getMessage();
+
+			//エラーメッセージを渡す
+			request.setAttribute("erroMess", ErroMesEnum.JSONERRORMES.getMes());
+
+			RequestDispatcher rd = request.getRequestDispatcher(url);
+			rd.forward(request, response);
+
 		}
 
-
-		RequestDispatcher rd = request.getRequestDispatcher(url);
-		rd.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

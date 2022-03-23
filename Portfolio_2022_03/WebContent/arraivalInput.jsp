@@ -6,57 +6,58 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <link rel="stylesheet" href="style.css">
+
+<script src="inventorymanagement.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>Insert title here</title>
 </head>
 <body>
 
-	<main>
+	<div class="centerMain">
 
-	<%
-		if (erroMess != null) {
+		<%
+			if (erroMess != null) {
 
-			out.print(erroMess);
+				out.print(erroMess);
 
-		}
-	%>
+			}
+		%>
 
-	<h3>入荷処理</h3>
+		<h3>入荷処理</h3>
 
-	<form action="ArrivalInputServlet" method="post">
+		<form action="ArrivalInputServlet" method="post">
 
-		<div class="slipCode">
+			<div class="slipCode">
 
-			伝票コード
-			<input type="text" name="slipCode">
+				伝票コード
+				<input type="text" name="slipCode">
 
-		</div>
+			</div>
 
-		<!-- 入力数がゼロにならないように一つは消さない -->
-		<ul id="form_ul">
+			<!-- 入力数がゼロにならないように一つは消さない -->
+			<ul id="formUl">
 
-			<li class="form_li">
+				<li class="formLi"><input type="text" name="itemCode" placeholder='商品コード'> <input type="number" name="itemCount" placeholder='個数' min="1" step="1"></li>
 
-				<input type="text" name="itemCode" placeholder='商品コード'>
+			</ul>
 
-				<input type="number" name="itemCount" placeholder='個数' min="1" step="1">
+			<div class="underArea">
 
-			</li>
+				<input type="button" value="入力商品追加" onclick="addForm()">
 
-		</ul>
+				<input type="submit" value="確認" onclick="return confi()">
 
-		<div class="under_area">
+			</div>
 
-			<input type="button" value="入力商品追加" onclick="addForm()">
+		</form>
 
-			<input type="submit" value="確認" onclick="return confi()">
+		<a href="index.jsp">トップページ</a>
 
-		</div>
 
-	</form>
-
-	<a href="index.jsp">トップページ</a> <script src="inventorymanagement.js"></script> </main>
-
+	</div>
 </body>
 </html>

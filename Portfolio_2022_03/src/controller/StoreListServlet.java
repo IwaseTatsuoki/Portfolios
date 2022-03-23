@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.ItemInfoBean;
 import bean.StoreBean;
-import model.SqlException;
 import model.InventoryDAO;
+import model.ItemInfoDAO;
+import model.SqlException;
 
 /**
  * Servlet implementation class StoreListServlet
@@ -32,7 +34,43 @@ public class StoreListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String url = "storeList.jsp";
+		String nextPage = request.getParameter("next");
+		String url = null;
+
+		switch (nextPage) {
+
+		case "inventoryList":
+
+			url = "inventoryList.jsp";
+
+			try {
+
+				ItemInfoBean itemInfoBean = new ItemInfoDAO().getItemInfo();
+
+				request.setAttribute("itemInfoBean", itemInfoBean);
+
+			}catch(SqlException e) {
+
+				// エラー内容表示
+				e.printStackTrace();
+
+				//エラーメッセージを渡す
+				request.setAttribute("erroMess", e.getERRORMESS());
+
+				//エラー時遷移先
+				url = e.getERRORURL();
+			}
+
+
+			break;
+
+		case "slipList":
+
+			url = "slipList.jsp";
+
+
+			break;
+		}
 
 		try {
 

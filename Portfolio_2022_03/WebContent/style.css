@@ -1,54 +1,90 @@
 /* 全体 */
-main {
+.centerMain {
 	text-align: center;
 }
 
 /* indexのリスト中央ぞろえ */
-ul {
+.indexUl {
 	text-align: left;
 	float: left;
 	position: relative;
 	left: 50%;
 }
 
-li {
+.indexLi {
 	list-style: none;
 	position: relative;
 	left: -130%;
 	padding: 10px 0;
 }
 
-/* shipping.jsp */
+/* shipping.jspとarraivalInput.jsp */
 
 /* 送り元送り先入力エリア */
 .sendInputArea {
 	margin-bottom: 15px;
 }
 
-#form_ul li {
-	position: relative;
-	left: -50%;
-	padding: 10px 0;
-}
-
-.under_area {
+.undeArea {
 	clear: both;
 	margin-bottom: 20px;
 }
 
-/* 商品入力フォーム */
-#form_area input {
-	margin-right: 5px;
-	margin-bottom: 10px;
+/* 伝票入力のリスト中央そろえる */
+.formUl {
+	float: left;
+	position: relative;
+	left: 50%;
+}
+
+.formLi {
+	text-align: left;
+	list-style: none;
+	position: relative;
+	left: 38%;
+	padding: 10px 0;
 }
 
 /* inventoryList */
-.inventoryListTable {
+
+/* 左のfilter部分 */
+.filterUl {
+	list-style: none;
+}
+
+.filterUl li {
+	text-align: left;
+}
+
+.area {
+	float: left;
+	margin-left: 45px;
+	margin-right: 60px;
+}
+
+#inventoryListTable {
+	margin: auto;
+	border-collapse: collapse;
+	margin-left: 30px;
+}
+
+#inventoryListTable td, #inventoryListTable th {
+	border-bottom: 1px solid black;
+	width: 80px;
+	height: 70px;
+}
+
+#inventoryListTable #inventoryListItemName {
+	width: 200px;
+}
+
+/* slipListのtable中央 */
+#slipListArea {
 	margin: auto;
 	border-collapse: collapse;
 }
 
-.inventoryListTable table, td, th {
+#slipListArea td, #slipListArea th {
 	border-bottom: 1px solid black;
 	width: 150px;
 	height: 70px;

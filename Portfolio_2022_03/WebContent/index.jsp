@@ -13,7 +13,7 @@
 </head>
 <body>
 
-	<main>
+	<div class="centerMain">
 
 
 	<%
@@ -30,19 +30,19 @@
 	<h2>在庫管理システム</h2>
 
 
-	<ul>
+	<ul class="indexUl">
 
-		<li><a href="shippingInput.jsp">出荷処理</a></li>
+		<li class="indexLi"><a href="shippingInput.jsp">出荷処理</a></li>
 
-		<li><a href="arraivalInput.jsp">入荷処理</a></li>
+		<li class="indexLi"><a href="arraivalInput.jsp">入荷処理</a></li>
 
-		<li><a href="StoreListServlet">在庫一覧</a></li>
+		<li class="indexLi"><a href="StoreListServlet?next=inventoryList">在庫一覧</a></li>
 
-		<li><a href="slipList.jsp">返品</a></li>
+		<li class="indexLi"><a href="StoreListServlet?next=slipList">返品</a></li>
 
 	</ul>
 
-	</main>
+	</div>
 
 </body>
 </html>

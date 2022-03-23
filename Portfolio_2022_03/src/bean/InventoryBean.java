@@ -8,15 +8,25 @@ public class InventoryBean {
 	private int price;
 	private String size;
 	private String color;
+	private String categoryName;
+	private String sexType;
+	private String bestBefore;
 	private int inventoryCount;
 	private int shipmentPending;
 
-	public InventoryBean(String itemName,
+
+
+	public InventoryBean(
+			String itemName,
 			int price,
 			String size,
 			String color,
 			int inventoryCount,
-			int shipmentPending ) {
+			int shipmentPending,
+			String categoryName,
+			String sexType,
+			String bestBefore
+			) {
 
 		this.itemName = itemName;
 		this.price = price;
@@ -24,7 +34,9 @@ public class InventoryBean {
 		this.color = color;
 		this.inventoryCount = inventoryCount;
 		this.shipmentPending = shipmentPending;
-
+		this.categoryName = categoryName;
+		this.sexType = sexType;
+		this.bestBefore = bestBefore;
 	}
 
 	public String getItemName() {
@@ -51,5 +63,16 @@ public class InventoryBean {
 		return shipmentPending;
 	}
 
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public String getSexType() {
+		return sexType;
+	}
+
+	public String getBestBefore() {
+		return bestBefore;
+	}
 
 }
