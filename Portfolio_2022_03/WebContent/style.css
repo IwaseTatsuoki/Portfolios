@@ -46,26 +46,22 @@
 }
 
 /* inventoryList */
-
-/* 左のfilter部分 */
-.filterUl {
-	list-style: none;
-}
-
-.filterUl li {
-	text-align: left;
-}
-
-.area {
-	float: left;
-	margin-left: 45px;
-	margin-right: 60px;
-}
-
 #inventoryListTable {
 	margin: auto;
 	border-collapse: collapse;
-	margin-left: 30px;
+}
+
+.sort.desc:after {
+	content: "▼";
+}
+
+.sort.asc:after {
+	content: "▲";
+}
+
+/*テーブル検索 */
+.searchArea {
+	margin: 15px 0px;
 }
 
 #inventoryListTable td, #inventoryListTable th {
@@ -76,6 +72,10 @@
 
 #inventoryListTable #inventoryListItemName {
 	width: 200px;
+}
+
+#inventoryListTable #bestBefore {
+	width: 170px;
 }
 
 /* slipListのtable中央 */

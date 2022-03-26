@@ -70,7 +70,7 @@ function confi() {
 
 //ajax
 //非同期伝票表示
-
+//伝票一覧表示
 function ajaxGetSlip() {
 
 	var storeCode = document.getElementById("storeCode").value;
@@ -154,7 +154,7 @@ function ajaxGetSlip() {
 	});
 }
 
-
+//在庫一覧表示
 function ajaxGetInventory() {
 
 	var storeCode = document.getElementById("storeCode").value;
@@ -171,7 +171,7 @@ function ajaxGetInventory() {
 		dataType: "json",
 
 	}).done(function (data) {
-		console.log(data);
+
 		// success
 		//取得jsonデータ
 		var data_stringify = JSON.stringify(data);
@@ -181,6 +181,7 @@ function ajaxGetInventory() {
 
 		var tr_all = insert_area.querySelectorAll("tr");
 
+//		表示前にすでに一覧が表示されていたら消す
 		if(tr_all.length > 0){
 
 			for (let i = 0; i < tr_all.length; i++) {
@@ -190,13 +191,35 @@ function ajaxGetInventory() {
 		}
 
 		for (var row in data_json) {
-			console.log(data_json[row]);
+
 			var table_tr = document.createElement("tr");
 			insert_area.appendChild(table_tr);
 
 			for (var item in data_json[row]) {
 
 				var table_td = document.createElement("td");
+
+				if(item == "itemName"){
+					table_td.className = "itemName";
+				}else if(item == "price"){
+					table_td.className = "price";
+				}else if(item == "bestBefore"){
+					table_td.className = "date";
+				}else if(item == "inventoryCount"){
+					table_td.className = "inventoryCount";
+				}else if(item == "size"){
+					table_td.className = "size";
+				}else if(item == "categoryName"){
+					table_td.className = "category";
+				}else if(item == "color"){
+					table_td.className = "color";
+				}else if(item == "sexType"){
+					table_td.className = "sex";
+				}else if(item == "shipmentPending"){
+					table_td.className = "shipmentPending";
+				}
+
+
 
 				table_tr.appendChild(table_td);
 
@@ -205,6 +228,16 @@ function ajaxGetInventory() {
 			}
 		}
 
+		var options = {
+				valueNames : [ "itemName", 'price', "size", "color", "category",
+					"sex", "date", "inventoryCount", "shipmentPending" ]
+		};
+
+		var userList = new List('users', options);
+
+//		userList.sort('price', {
+//			order : 'asc'
+//		});
 
 	})
 	.fail(function (data) {
