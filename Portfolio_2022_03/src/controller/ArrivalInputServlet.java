@@ -42,8 +42,6 @@ public class ArrivalInputServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
-
 		//画面遷移URL
 		String url = "index.jsp";
 
@@ -63,7 +61,7 @@ public class ArrivalInputServlet extends HttpServlet {
 		for (int i = 0; i < itemCount.length; i++) {
 
 			//nullと空文字じゃない場合beanを生成しリストに加える
-			//ブランクは入るがDBに登録する前にBeanの中身がDBに登録されているか確認するので問題ない
+
 			if (itemCode[i] != null && !itemCode[i].isEmpty() && itemCount[i] != null && !itemCount[i].isEmpty()) {
 
 				ItemBean inputBean = new ItemBean(itemCode[i], Integer.parseInt(itemCount[i]));

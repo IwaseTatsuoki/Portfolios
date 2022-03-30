@@ -34,6 +34,8 @@
 
 	<div class="centerMain">
 
+		<h3>出荷伝票取り消し</h3>
+
 		店舗コード <select class="select2" id="storeCode" style="width: 200px;">
 			<%
 				for (StoreBean storeBean : storeBeanList) {

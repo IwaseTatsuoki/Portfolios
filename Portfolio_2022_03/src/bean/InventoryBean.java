@@ -1,8 +1,7 @@
 package bean;
 
+//inventoryList.jspで表示する在庫情報を保持。
 public class InventoryBean {
-
-	//item.item_name,item.price,size.size_type, color.color_type, inventory.inventory_count, inventory.shipment_pending
 
 	private String itemName;
 	private int price;
@@ -13,8 +12,6 @@ public class InventoryBean {
 	private String bestBefore;
 	private int inventoryCount;
 	private int shipmentPending;
-
-
 
 	public InventoryBean(
 			String itemName,

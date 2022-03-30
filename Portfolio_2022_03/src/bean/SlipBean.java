@@ -1,5 +1,6 @@
 package bean;
 
+//伝票情報保持
 public class SlipBean {
 
 	private String slipCode;

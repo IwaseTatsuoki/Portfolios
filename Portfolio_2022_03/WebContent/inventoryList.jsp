@@ -20,7 +20,6 @@
 <link rel="stylesheet" href="style.css">
 <!-- Select2.css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">
-
 <!-- jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- Select2本体 -->
@@ -43,8 +42,6 @@
 	<div class="centerMain">
 
 		<h3>在庫表示店舗選択</h3>
-
-
 
 
 		店舗名 <select class="select2" id="storeCode" style="width: 200px;">

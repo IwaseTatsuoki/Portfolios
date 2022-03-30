@@ -2,6 +2,7 @@ package bean;
 
 import java.util.List;
 
+//一度作ったがいらなくなったが念のため残してる。
 public class ItemInfoBean {
 
 	private List<String> sizes;
@@ -44,8 +45,4 @@ public class ItemInfoBean {
 	public List<String> getSexs() {
 		return sexs;
 	}
-
-
-
-
 }

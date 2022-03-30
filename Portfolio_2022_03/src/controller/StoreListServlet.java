@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bean.ItemInfoBean;
 import bean.StoreBean;
-import model.InventoryDAO;
-import model.ItemInfoDAO;
 import model.SqlException;
+import model.ItemSlipGetDAO;
 
 /**
  * Servlet implementation class StoreListServlet
@@ -34,47 +32,35 @@ public class StoreListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String nextPage = request.getParameter("next");
-		String url = null;
 
-		switch (nextPage) {
+//		String storeCode = request.getParameter("storeCode");
+		String url = request.getParameter("url");
 
-		case "inventoryList":
-
-			url = "inventoryList.jsp";
-
-			try {
-
-				ItemInfoBean itemInfoBean = new ItemInfoDAO().getItemInfo();
-
-				request.setAttribute("itemInfoBean", itemInfoBean);
-
-			}catch(SqlException e) {
-
-				// エラー内容表示
-				e.printStackTrace();
-
-				//エラーメッセージを渡す
-				request.setAttribute("erroMess", e.getERRORMESS());
-
-				//エラー時遷移先
-				url = e.getERRORURL();
-			}
-
-
-			break;
-
-		case "slipList":
-
-			url = "slipList.jsp";
-
-
-			break;
-		}
+//		if(url.equals("shippingInput.jsp") || url.equals("arraivalInput.jsp")) {
+//
+//			try {
+//
+//				List<EntryItemBean> entryItemBeanList = new StoreItemGetDAO().getItemList(storeCode);
+//
+//				request.setAttribute("storeBeanList", entryItemBeanList);
+//
+//			}catch(SqlException e) {
+//
+//				// エラー内容表示
+//				e.printStackTrace();
+//
+//				//エラーメッセージを渡す
+//				request.setAttribute("erroMess", e.getERRORMESS());
+//
+//				//エラー時遷移先
+//				url = e.getERRORURL();
+//			}
+//
+//		}
 
 		try {
 
-			List<StoreBean> storeBeanList = new InventoryDAO().getStoreList();
+			List<StoreBean> storeBeanList = new ItemSlipGetDAO().getStoreList();
 
 			request.setAttribute("storeBeanList", storeBeanList);
 

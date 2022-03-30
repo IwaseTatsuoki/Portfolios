@@ -69,4 +69,14 @@
     <servlet-name>SlipDeleteServlet</servlet-name>
     <url-pattern>/SlipDeleteServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ShippingArraivalInputServlet</display-name>
+    <servlet-name>ShippingArraivalInputServlet</servlet-name>
+    <servlet-class>controller.ShippingArraivalInputServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShippingArraivalInputServlet</servlet-name>
+    <url-pattern>/ShippingArraivalInputServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -13,21 +13,21 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import bean.InventoryBean;
+import bean.SlipBean;
 import inventoryEnum.ErroMesEnum;
-import model.InventoryDAO;
+import model.SlipCancelDAO;
 import model.SqlException;
 
 /**
- * Servlet implementation class InventoryListServlet
+ * Servlet implementation class ShippingArraivalInputServlet
  */
-public class InventoryListServlet extends HttpServlet {
+public class ShippingArraivalInputServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public InventoryListServlet() {
+	public ShippingArraivalInputServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -36,31 +36,33 @@ public class InventoryListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
 
-		String url = "index.jsp" ;
+		String storeCode = request.getParameter("sender");
 
-		String storeCode = request.getParameter("storeCode");
+		SlipCancelDAO slipCancelDAO = new SlipCancelDAO();
+
+		String url = "index.jsp";
+
 
 		try {
 
-			InventoryDAO inventoryDAO = new InventoryDAO();
+			//入荷時のDB操作を一括で行う
+			List<SlipBean> slipBeanList = slipCancelDAO.getSlip(storeCode);
 
-			List<InventoryBean> inventoryBeanList = inventoryDAO.getInventoryList(storeCode);
 
 			// JSON変換用のクラス
 			ObjectMapper mapper = new ObjectMapper();
 
 			//JSON文字列に変換
-			String json = mapper.writeValueAsString(inventoryBeanList);
+			String json = mapper.writeValueAsString(slipBeanList);
 
 			//ヘッダ設定
 			response.setContentType("application/json;charset=UTF-8");   //JSON形式, UTF-8
@@ -74,20 +76,21 @@ public class InventoryListServlet extends HttpServlet {
 			//クローズ
 			pw.close();
 
-		} catch (SqlException e) {
+
+		}catch (SqlException e) {
 
 			// エラー内容表示
 			e.printStackTrace();
+			e.getMessage();
+
 
 			//エラーメッセージを渡す
 			request.setAttribute("erroMess", e.getERRORMESS());
 
-			url = e.getERRORURL();
-
 			RequestDispatcher rd = request.getRequestDispatcher(url);
 			rd.forward(request, response);
 
-		}catch (JsonProcessingException e) {
+		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			e.getMessage();
 
@@ -102,3 +105,5 @@ public class InventoryListServlet extends HttpServlet {
 	}
 
 }
+
+

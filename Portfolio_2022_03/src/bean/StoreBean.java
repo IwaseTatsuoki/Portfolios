@@ -1,5 +1,6 @@
 package bean;
 
+//店舗情報保持
 public class StoreBean {
 
 	private String storeName;

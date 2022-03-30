@@ -16,31 +16,28 @@
 	<div class="centerMain">
 
 
-	<%
-		if (erroMess != null) {
+		<%
+			if (erroMess != null) {
 
-			out.print(erroMess);
+				out.print(erroMess);
 
+			}
+		%>
 
-		}
-	%>
+		<h2>在庫管理システム</h2>
 
+		<!--すべて同じサーブレットで上二つは店舗情報に加え商品情報もDBからもってくる  -->
+		<ul class="indexUl">
 
+			<li class="indexLi"><a href="StoreListServlet?url=shippingInput.jsp">出荷処理</a></li>
 
-	<h2>在庫管理システム</h2>
+			<li class="indexLi"><a href="StoreItemListServlet?url=arraivalInput.jsp">入荷処理</a></li>
 
+			<li class="indexLi"><a href="StoreListServlet?url=inventoryList.jsp">在庫一覧</a></li>
 
-	<ul class="indexUl">
+			<li class="indexLi"><a href="StoreListServlet?url=slipList.jsp">返品</a></li>
 
-		<li class="indexLi"><a href="shippingInput.jsp">出荷処理</a></li>
-
-		<li class="indexLi"><a href="arraivalInput.jsp">入荷処理</a></li>
-
-		<li class="indexLi"><a href="StoreListServlet?next=inventoryList">在庫一覧</a></li>
-
-		<li class="indexLi"><a href="StoreListServlet?next=slipList">返品</a></li>
-
-	</ul>
+		</ul>
 
 	</div>
 
