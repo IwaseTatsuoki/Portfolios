@@ -1,11 +1,13 @@
+<%@page import="bean.SlipBean"%>
 <%@page import="bean.EntryItemBean"%>
 <%@page import="bean.StoreBean"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
-	String erroMess = (String) request.getAttribute("erroMess");
+	String erroMess = (String) session.getAttribute("erroMess");
 	List<StoreBean> storeBeanList = (List<StoreBean>) request.getAttribute("storeBeanList");
+	List<SlipBean> slipBeanList = (List<SlipBean>) request.getAttribute("slipBeanList");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,6 +38,7 @@
 			if (erroMess != null) {
 
 				out.print(erroMess);
+				session.removeAttribute("erroMess");
 
 			}
 		%>
@@ -46,19 +49,19 @@
 
 			<div class="slipCode">
 
-				伝票コード <select class="select2" id="storeCode" style="width: 200px;">
+				伝票コード <select class="select2" id="slipCode" name="slipCode" style="width: 400px;">
 					<%
-						for (StoreBean storeBean : storeBeanList) {
+						for (SlipBean slipBean : slipBeanList) {
 
-							out.println("<option value='" + storeBean.getStoreCode() + "'>");
-							out.println(storeBean.getStoreName() + "</option>");
+							out.println("<option value='" + slipBean.getSlipCode() + "," + slipBean.getStoreName() + "'>");
+							out.println(slipBean.getSlipCode() + "</option>");
 						}
 					%>
 				</select>
 
 				<br>
 
-				受け取り店舗<select class="select2" id="storeCode" style="width: 200px;">
+				受け取り店舗<select class="select2" id="receiver" style="width: 200px;">
 					<%
 						for (StoreBean storeBean : storeBeanList) {
 
@@ -68,27 +71,37 @@
 					%>
 				</select>
 
+				<input type="button" onclick="entryArraivalItem()" value="確定">
+
 			</div>
 
-			<!-- 入力数がゼロにならないように一つは消さない -->
-			<ul id="formUl">
+			<!-- 非表示。送り元と送り先が同じの時表示。 -->
+			<div id="sameStore">送り元と送り先が異なります。</div>
 
-				<li class="formLi"><input type="text" name="itemCode" placeholder='商品コード'> <input type="number" name="itemCount" placeholder='個数' min="1" step="1"></li>
+			<div id="itemInputArea">
 
-			</ul>
+				<div id="firstUl">
+					<ul id="formUl">
 
-			<div class="underArea">
+						<!--クローンの見本なので常に非表示エリア  -->
+						<div id="cloneModel"></div>
 
-				<input type="button" value="入力商品追加" onclick="addForm()">
+					</ul>
+				</div>
 
-				<input type="submit" value="確認" onclick="return confi()">
+				<!-- 非表示。送り元と送り先を選ぶと表示。 -->
+				<div class="underArea">
 
+					<input type="button" value="入力商品追加" onclick="addForm()">
+
+					<input type="submit" value="出荷確認" onclick="return confi()">
+
+				</div>
 			</div>
 
 		</form>
 
 		<a href="index.jsp">トップページ</a>
-
 
 	</div>
 </body>

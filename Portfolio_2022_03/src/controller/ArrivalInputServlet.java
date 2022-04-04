@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bean.ItemBean;
 import inventoryEnum.ErroMesEnum;
@@ -41,13 +41,14 @@ public class ArrivalInputServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session =  request.getSession();
 
 		//画面遷移URL
 		String url = "index.jsp";
 
 		//比較する伝票コードを取得
-		String slipCode = request.getParameter("slipCode");
-
+		//,の前の伝票コードのみ切り出し
+		String slipCode = request.getParameter("slipCode").split(",")[0];
 
 		//受け取った値をBeanにいれる（商品コードと出荷数）
 		//入荷した商品のリスト
@@ -60,16 +61,11 @@ public class ArrivalInputServlet extends HttpServlet {
 		//itemcodeとitemCountは同じ数なのでどちらかの数だけ回す
 		for (int i = 0; i < itemCount.length; i++) {
 
-			//nullと空文字じゃない場合beanを生成しリストに加える
+			ItemBean inputBean = new ItemBean(itemCode[i], Integer.parseInt(itemCount[i]));
 
-			if (itemCode[i] != null && !itemCode[i].isEmpty() && itemCount[i] != null && !itemCount[i].isEmpty()) {
+			arraivalItemBeanList.add(inputBean);
 
-				ItemBean inputBean = new ItemBean(itemCode[i], Integer.parseInt(itemCount[i]));
-
-				arraivalItemBeanList.add(inputBean);
-			}
 		}
-
 
 		ArraivalDAO arraivalDAO = new ArraivalDAO();
 
@@ -81,12 +77,12 @@ public class ArrivalInputServlet extends HttpServlet {
 			//入荷した商品と出荷伝票に差異があればfalseがかえってくる
 			if(!arraivalResult) {
 
-				url = "arraivalInput.jsp";
-				request.setAttribute("erroMess", ErroMesEnum.ARRAIVALMISMATCH.getMes());
+				url = "StoreListServlet?url=arraivalInput.jsp";
+				session.setAttribute("erroMess", ErroMesEnum.ARRAIVALMISMATCH.getMes());
 
 			}else {
 
-				request.setAttribute("erroMess", "成功");
+				session.setAttribute("success","成功");
 			}
 
 		}catch (SqlException e) {
@@ -103,8 +99,8 @@ public class ArrivalInputServlet extends HttpServlet {
 
 		}
 
-		RequestDispatcher rd = request.getRequestDispatcher(url);
-		rd.forward(request, response);
+		//更新押したときに同じ処理を避けるため。
+		response.sendRedirect(url);
 
 
 	}

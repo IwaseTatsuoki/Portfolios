@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import bean.SlipBean;
+import bean.EntryItemBean;
 import inventoryEnum.ErroMesEnum;
-import model.SlipCancelDAO;
 import model.SqlException;
+import model.StoreItemSlipDAO;
 
 /**
  * Servlet implementation class ShippingArraivalInputServlet
@@ -45,24 +45,38 @@ public class ShippingArraivalInputServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String storeCode = request.getParameter("sender");
+		String flag = request.getParameter("flag");
 
-		SlipCancelDAO slipCancelDAO = new SlipCancelDAO();
+		String sender = request.getParameter("sender");
+
+		String slipCode = request.getParameter("slipCode");
+
+		StoreItemSlipDAO storeItemSlipDAO = new StoreItemSlipDAO();
 
 		String url = "index.jsp";
 
 
 		try {
 
-			//入荷時のDB操作を一括で行う
-			List<SlipBean> slipBeanList = slipCancelDAO.getSlip(storeCode);
+			List<EntryItemBean> entryItemBeanList = null;
+
+			if(flag.equals("shipping")) {
+
+
+				entryItemBeanList = storeItemSlipDAO.getEntryItemList(sender);
+
+			}else if(flag.equals("arraival")) {
+
+				entryItemBeanList = storeItemSlipDAO.getSlipItem(slipCode);
+
+			}
 
 
 			// JSON変換用のクラス
 			ObjectMapper mapper = new ObjectMapper();
 
 			//JSON文字列に変換
-			String json = mapper.writeValueAsString(slipBeanList);
+			String json = mapper.writeValueAsString(entryItemBeanList);
 
 			//ヘッダ設定
 			response.setContentType("application/json;charset=UTF-8");   //JSON形式, UTF-8
@@ -75,6 +89,7 @@ public class ShippingArraivalInputServlet extends HttpServlet {
 
 			//クローズ
 			pw.close();
+
 
 
 		}catch (SqlException e) {

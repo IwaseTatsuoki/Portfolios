@@ -4,34 +4,24 @@ var i = 1;
 //idとnameに変数iを順番に振っていく
 function addForm() {
 
-	//ulタグ
-	var input_li = document.createElement('li');
-	input_li.className = 'formLi';
-	input_li.id = 'li' + i;
-	var ulParent = document.getElementById('formUl');
-	ulParent.appendChild(input_li);
+	// 複製するHTML要素を取得
+	var form_ul = document.getElementById("formUl");
+	var first_form_li = document.getElementById("firstFormLi");
 
-	//商品コード入力欄
-	var input_data = document.createElement('input');
-	input_data.type = 'text';
-	input_data.id = 'text' + i;
-	input_data.name = 'itemCode';
-	input_data.placeholder = '商品コード';
-	input_data.style = 'margin-right: 5px;';
+	// 複製
+	var clone_element = first_form_li.cloneNode(true);
+
+	clone_element.id = "li"+ i
+
+	// 複製したHTML要素をページに挿入
+	form_ul.appendChild(clone_element);
+
+	//見本にはnameがないのでつける。
+	clone_element.querySelector("select").name = "itemCode";
+	clone_element.querySelector("input").name = "itemCount";
+
+//	削除ボタンを同じliに追加するために取得。
 	var parent = document.getElementById('li' + i);
-	parent.appendChild(input_data);
-
-	//商品数入力欄
-	var input_num = document.createElement('input');
-	input_num.type = 'number';
-	input_num.id = 'num' + i;
-	input_num.name = 'itemCount';
-	input_num.placeholder = '個数';
-	input_num.style = 'margin-right: 5px;';
-	input_num.min = 1;
-	input_num.step = 1;
-	parent.appendChild(input_num);
-
 
 	//フォーム消去ボタン
 	var button_data = document.createElement('button');
@@ -54,8 +44,6 @@ function deleteBtn(target) {
 	var li_id = document.getElementById('li' + target_id);
 	var tgt_id = document.getElementById(target_id);
 
-	li_id.removeChild(text_id);
-	li_id.removeChild(num_id);
 	li_id.removeChild(tgt_id);
 	ul_id.removeChild(li_id);
 }
@@ -105,6 +93,9 @@ function ajaxGetSlip() {
 
 			}
 		}
+
+//		labelつけるためにidを使用そのidを区別するための番号
+		var data_count = 0;
 
 //		DBから持ってきた情報をテーブルとして表示させる
 		for (var row in data_json) {
@@ -201,8 +192,8 @@ function ajaxGetInventory() {
 
 				var table_td = document.createElement("td");
 
-//list.jsでソートするためにクラス名をつける
-				 if(item == "price"){
+//				list.jsでソートするためにクラス名をつける
+				if(item == "price"){
 					table_td.className = "price";
 				}else if(item == "bestBefore"){
 					table_td.className = "date";
@@ -226,9 +217,6 @@ function ajaxGetInventory() {
 
 		var userList = new List('users', options);
 
-//		userList.sort('price', {
-//			order : 'asc'
-//		});
 
 	})
 	.fail(function (data) {
@@ -244,17 +232,43 @@ $(function () {
 	});
 })
 
-//shippingInputのajax
-function itemSelect(){
 
-	var storeCode = document.getElementById("sender").value;
+//shippingInputのajax
+//送り元と送り先店舗を入力すると送り先の店舗の在庫にある商品が選択できる
+//selectを作る
+function entryShippingItem(){
+
+
+//	確定を押すと一度全部の商品入力ボックスを消す。
+	var li_all = document.querySelectorAll("li");
+
+	if(li_all.length > 0){
+
+		for (let i = 0; i < li_all.length; i++) {
+			li_all[i].remove();
+
+		}
+	}
+
+//	追加と確定も一度非表示にする
+	var under_area =  document.querySelectorAll(".underArea input");
+	under_area[0].style.display = "none";
+	under_area[1].style.display = "none";
+
+	var sender = document.getElementById("sender").value;
+	var receiver = document.getElementById("receiver").value;
+
+	if(sender == receiver){
+		document.getElementById("sameStore").style.display = "block";
+		return;
+	}
 
 	var request = {
-			sender: storeCode
+			sender: sender
 	};
 
 	$.ajax({
-		url: "http://localhost:8080/Portfolio_2022_03/ShippingArraivalInputServlet",
+		url: "http://localhost:8080/Portfolio_2022_03/ShippingArraivalInputServlet?flag=shipping",
 		type: "POST",
 		async: true,
 		data: request,
@@ -268,65 +282,187 @@ function itemSelect(){
 
 //		追加するエリアを取得
 		var input_area = document.getElementById("inputArea");
-		var first_ul = document.getElementById("firstUl");
 
-//		<li class="formLi"><input type="text" name="itemCode" placeholder='商品コード'>
-//		<input type="number" name="itemCount" placeholder='出荷数' min="1" step="1"></li>
+		document.getElementById("sameStore").style.display = "none";
 
-		var input_all = input_area.querySelectorAll("input");
 
-//		上の一行でtrを取得して数が0以上だったら一度全部消す新しく表示するときに続けて表示しないため
-		if(input_all.length > 0){
+//		店舗を選んでいないと入力ボックスの追加と出荷確定ボタンが出ないようにする。
+//		店舗を選ぶと出る。
 
-			for (let i = 0; i < input_all.length; i++) {
-				input_all[i].remove();
+		under_area[0].style.display = "block";
+		under_area[1].style.display = "block";
+		under_area[0].style.margin = "5px auto";
+		under_area[1].style.margin = "10px auto";
 
-			}
-		}
+//		見本の入力ボックスを一つ作りそれを複製する形で入力ボックスを増やす。
+//		見本は隠しnameもつけない。
+		var clone_model = document.getElementById("cloneModel");
+		var form_ul = document.getElementById("formUl");
 
-//		DBから持ってきた情報をテーブルとして表示させる
+		var form_ul_li = document.createElement("li");
+		form_ul_li.className = "formLi";
+		form_ul_li.id = "firstFormLi";
+		clone_model.appendChild(form_ul_li);
+
+		var form_ul_select = document.createElement("select");
+		form_ul_select.style.width = "40px";
+		form_ul_select.style.marginRight = "10px";
+		form_ul_li.appendChild(form_ul_select);
+
 		for (var row in data_json) {
-
-			var first_input = document.createElement("input");
-			slip_list_area.appendChild(table_tr);
-
-			for (var item in data_json[row]) {
-
-//				伝票コードの時だけチェックボックスを作る
-				if (item == "slipCode") {
-
-					var table_td = document.createElement("td");
-
-					var checkbox = document.createElement("input");
-					checkbox.type = "checkbox";
-					checkbox.name = "cancelCheck";
-					checkbox.id = "checkbox_" + data_count;
-					checkbox.value = data_json[row]["slipCode"];
-
-					var label = document.createElement("label");
-					label.htmlFor = "checkbox_" + data_count;
-
-					table_tr.appendChild(table_td);
-
-					table_td.appendChild(checkbox);
-
-					table_td.appendChild(label);
-
-					label.textContent = data_json[row][item];
-
-				} else {
-
-					var table_td = document.createElement("td");
-
-					table_tr.appendChild(table_td);
-
-					table_td.innerHTML = data_json[row][item];
-
-				}
-
-				data_count++;
-			}
+			var option = document.createElement("option");
+			option.value = data_json[row]["itemCode"];
+			option.text = data_json[row]["itemCode"];
+			form_ul_select.appendChild(option);
 		}
+
+		var form_ul_number = document.createElement("input");
+		form_ul_number.type = "number";
+		form_ul_number.width = "60px";
+		form_ul_number.value = 1;
+		form_ul_number.min = "1";
+		form_ul_number.step = "1";
+		form_ul_li.appendChild(form_ul_number);
+
+		// 複製するHTML要素を取得
+
+		var first_form_li = document.getElementById("firstFormLi");
+
+		// 複製
+		var clone_element = first_form_li.cloneNode(true);
+
+		// 複製したHTML要素をページに挿入
+		form_ul.appendChild(clone_element);
+
+		//見本にはnameがないのでつける。
+		clone_element.querySelector("select").name = "itemCode";
+		clone_element.querySelector("input").name = "itemCount";
+
+
+	})
+	.fail(function (data) {
+		// error
+		console.log("error");
+	});
+}
+
+
+//arraivalInput.jsp
+//伝票コードと送り先を決めたら商品入力欄が表示
+function entryArraivalItem(){
+
+
+//	確定を押すと一度全部の商品入力ボックスを消す。
+	var li_all = document.querySelectorAll("li");
+
+	if(li_all.length > 0){
+
+		for (let i = 0; i < li_all.length; i++) {
+			li_all[i].remove();
+
+		}
+	}
+
+//	追加と確定も一度非表示にする
+	var under_area =  document.querySelectorAll(".underArea input");
+	under_area[0].style.display = "none";
+	under_area[1].style.display = "none";
+
+	var slipInfo = document.getElementById("slipCode").value.split(',');;
+	var slipCode = slipInfo[0];
+	console.log(slipCode);
+	var slipReceiver = slipInfo[1];
+
+	var receiver = document.getElementById("receiver");
+
+	// selectedで選択されている値の番号が取得されます
+	let idx = receiver.selectedIndex;
+
+	// 値を取得
+	let txt  = receiver.options[idx].text;
+
+//	伝票コードの送り元店舗と入力された店舗が一致しなければ先に進まない。
+	if(slipReceiver != txt){
+		document.getElementById("sameStore").style.display = "block";
+		return;
+	}
+
+	var request = {
+			slipCode: slipCode
+	};
+
+	$.ajax({
+		url: "http://localhost:8080/Portfolio_2022_03/ShippingArraivalInputServlet?flag=arraival",
+		type: "POST",
+		async: true,
+		data: request,
+		dataType: "json",
+
+	}).done(function (data) {
+		// success
+		//取得jsonデータ
+		var data_stringify = JSON.stringify(data);
+		var data_json = JSON.parse(data_stringify);
+
+//		追加するエリアを取得
+		var input_area = document.getElementById("inputArea");
+
+		document.getElementById("sameStore").style.display = "none";
+
+
+//		店舗を選んでいないと入力ボックスの追加と出荷確定ボタンが出ないようにする。
+//		店舗を選ぶと出る。
+
+		under_area[0].style.display = "block";
+		under_area[1].style.display = "block";
+		under_area[0].style.margin = "5px auto";
+		under_area[1].style.margin = "10px auto";
+
+//		見本の入力ボックスを一つ作りそれを複製する形で入力ボックスを増やす。
+//		見本は隠しnameもつけない。
+		var clone_model = document.getElementById("cloneModel");
+		var form_ul = document.getElementById("formUl");
+
+		var form_ul_li = document.createElement("li");
+		form_ul_li.className = "formLi";
+		form_ul_li.id = "firstFormLi";
+		clone_model.appendChild(form_ul_li);
+
+		var form_ul_select = document.createElement("select");
+		form_ul_select.style.width = "40px";
+		form_ul_select.style.marginRight = "10px";
+		form_ul_li.appendChild(form_ul_select);
+
+		for (var row in data_json) {
+			var option = document.createElement("option");
+			option.value = data_json[row]["itemCode"];
+			option.text = data_json[row]["itemCode"];
+			form_ul_select.appendChild(option);
+		}
+
+		var form_ul_number = document.createElement("input");
+		form_ul_number.type = "number";
+		form_ul_number.width = "60px";
+		form_ul_number.value = 1;
+		form_ul_number.min = "1";
+		form_ul_number.step = "1";
+		form_ul_li.appendChild(form_ul_number);
+
+		// 複製するHTML要素を取得
+
+		var first_form_li = document.getElementById("firstFormLi");
+
+		// 複製
+		var clone_element = first_form_li.cloneNode(true);
+
+		// 複製したHTML要素をページに挿入
+		form_ul.appendChild(clone_element);
+
+		//見本にはnameがないのでつける。
+		clone_element.querySelector("select").name = "itemCode";
+		clone_element.querySelector("input").name = "itemCount";
+
+
 	})
 	.fail(function (data) {
 		// error

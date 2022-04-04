@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.SlipBean;
 import bean.StoreBean;
 import model.SqlException;
-import model.ItemSlipGetDAO;
+import model.StoreItemSlipDAO;
 
 /**
  * Servlet implementation class StoreListServlet
@@ -33,34 +34,22 @@ public class StoreListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
-//		String storeCode = request.getParameter("storeCode");
 		String url = request.getParameter("url");
 
-//		if(url.equals("shippingInput.jsp") || url.equals("arraivalInput.jsp")) {
-//
-//			try {
-//
-//				List<EntryItemBean> entryItemBeanList = new StoreItemGetDAO().getItemList(storeCode);
-//
-//				request.setAttribute("storeBeanList", entryItemBeanList);
-//
-//			}catch(SqlException e) {
-//
-//				// エラー内容表示
-//				e.printStackTrace();
-//
-//				//エラーメッセージを渡す
-//				request.setAttribute("erroMess", e.getERRORMESS());
-//
-//				//エラー時遷移先
-//				url = e.getERRORURL();
-//			}
-//
-//		}
+		StoreItemSlipDAO storeItemSlipDAO = new StoreItemSlipDAO();
+
 
 		try {
 
-			List<StoreBean> storeBeanList = new ItemSlipGetDAO().getStoreList();
+			if(url.equals("arraivalInput.jsp")) {
+
+				List<SlipBean> slipBeanList = storeItemSlipDAO.getSlipAll();
+
+				request.setAttribute("slipBeanList", slipBeanList);
+
+			}
+
+			List<StoreBean> storeBeanList = storeItemSlipDAO.getStoreList();
 
 			request.setAttribute("storeBeanList", storeBeanList);
 

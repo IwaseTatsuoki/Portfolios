@@ -36,7 +36,7 @@
 
 		<h3>出荷伝票取り消し</h3>
 
-		店舗コード <select class="select2" id="storeCode" style="width: 200px;">
+		出荷店舗コード <select class="select2" id="storeCode" style="width: 200px;">
 			<%
 				for (StoreBean storeBean : storeBeanList) {
 
@@ -63,10 +63,10 @@
 			</table>
 
 
-			<input type="submit" value="取り消し">
+			<input type="submit" value="取り消し" class="slipUnder">
 		</form>
 
-		<a href="index.jsp">トップページ</a>
+		<a href="index.jsp" class="slipUnder">トップページ</a>
 
 	</div>
 

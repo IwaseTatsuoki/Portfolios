@@ -31,14 +31,11 @@ public class ArraivalMatch {
 					}
 
 					i++;
-
 				}
 
 				if(i == slipIBElementCount) {
 					return false;
 				}
-
-
 			}
 
 		}else {

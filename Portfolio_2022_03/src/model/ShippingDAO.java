@@ -16,14 +16,10 @@ import util.DButil;
 
 public class ShippingDAO {
 
-	public void shippingDB(List<ItemBean> slipItemBeanList, String sender, String sendingAddress)
+	public void shippingDB(List<ItemBean> slipItemBeanList, String sender, String sendingAddress, String uuidString)
 			throws SqlException {
 
-		//sqlを実行するのに使うクラス
-		ShippingExecute shippingExecute = new ShippingExecute();
 
-		//slip_codeの最大値の数字を入れる
-		String maxSlipCode = null;
 
 		//DB取得結果を格納するリスト
 		Connection con = null;
@@ -43,16 +39,11 @@ public class ShippingDAO {
 			con.setAutoCommit(false);
 
 			//inventoryの在庫数と未確定在庫を更新
-			shippingExecute.inventoryUpdate(con, ps, slipItemBeanList, sender);
+			ShippingExecute.inventoryUpdate(con, ps, slipItemBeanList, sender);
 
-			//伝票の連番を取得
-			maxSlipCode = shippingExecute.getMaxSlipCode(con, ps, rs);
+			ShippingExecute.shippingSlipInsert(con, ps, uuidString, sender, sendingAddress);
 
-//
-			shippingExecute.shippingSlipInsert(con, ps, maxSlipCode, sender, sendingAddress);
-
-
-			shippingExecute.slipItemListInsert(con, ps, maxSlipCode, slipItemBeanList);
+			ShippingExecute.slipItemListInsert(con, ps, uuidString, slipItemBeanList);
 
 			con.commit();
 

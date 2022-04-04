@@ -2,7 +2,6 @@ package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import bean.ItemBean;
 
 public class ShippingExecute  {
 
-	public void inventoryUpdate (Connection con, PreparedStatement ps, List<ItemBean> inputBeanList, String sender)
+	public static void inventoryUpdate (Connection con, PreparedStatement ps, List<ItemBean> inputBeanList, String sender)
 			throws Exception {
 
 		int[] resArray = new int[inputBeanList.size()];
@@ -45,46 +44,8 @@ public class ShippingExecute  {
 
 	}
 
-	public String getMaxSlipCode(Connection con, PreparedStatement ps, ResultSet rs)
-			throws Exception {
 
-		//連番の伝票コード
-		String maxSlipCode;
-
-		//伝票番号の連番を作るためslip_codeの最大値をもってくる
-		String sql = "select max(slip_code) from shipping_slip";
-
-		ps = con.prepareStatement(sql);
-
-		rs = ps.executeQuery();
-
-		if(rs == null) {
-
-			throw new Exception();
-
-		}
-
-		rs.next();
-
-		String stg = rs.getString("max(slip_code)");
-
-		//戻り値をvで2分割
-		String[] stgH = stg.split("v");
-
-
-		//分割した2つ目を数値にする
-		int stgN = Integer.parseInt(stgH[1]);
-
-		//それに1足して連番にする
-		stgN = stgN + 1;
-
-		maxSlipCode = "v" + stgN;
-
-		return maxSlipCode;
-
-	}
-
-	public void shippingSlipInsert(Connection con, PreparedStatement ps, String maxSlipCode, String sender, String sendingAddress)
+	public static void shippingSlipInsert(Connection con, PreparedStatement ps, String uuidString, String sender, String sendingAddress)
 			throws Exception {
 
 		//更新件数を受け取る
@@ -101,7 +62,7 @@ public class ShippingExecute  {
 
 		ps = con.prepareStatement(sql);
 
-		ps.setString(1, maxSlipCode);
+		ps.setString(1, uuidString);
 		ps.setDate(2, sqlDate);
 		ps.setString(3, sender);
 		ps.setString(4, sendingAddress);
@@ -118,7 +79,7 @@ public class ShippingExecute  {
 		}
 	}
 
-	public void slipItemListInsert(Connection con, PreparedStatement ps, String maxSlipCode, List<ItemBean> inputBeanList)
+	public static void slipItemListInsert(Connection con, PreparedStatement ps, String uuidString, List<ItemBean> inputBeanList)
 			throws Exception{
 
 		int[] resArray = new int[inputBeanList.size()];
@@ -132,7 +93,7 @@ public class ShippingExecute  {
 
 		for (int i = 0; i < inputBeanList.size(); i++) {
 
-			ps.setString(1, maxSlipCode);
+			ps.setString(1, uuidString);
 			ps.setString(2, inputBeanList.get(i).getItemCode());
 			ps.setInt(3, inputBeanList.get(i).getItemCount());
 

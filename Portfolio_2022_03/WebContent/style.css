@@ -25,9 +25,20 @@
 	margin-bottom: 15px;
 }
 
-.undeArea {
-	clear: both;
-	margin-bottom: 20px;
+#sameStore {
+	display: none;
+}
+
+#cloneModel {
+	display: none;
+}
+
+.undeArea input {
+	text-align: center;
+}
+
+.underArea input {
+	display: none;
 }
 
 /* 伝票入力のリスト中央そろえる */
@@ -41,7 +52,7 @@
 	text-align: left;
 	list-style: none;
 	position: relative;
-	left: 38%;
+	left: 42%;
 	padding: 10px 0;
 }
 
@@ -88,4 +99,8 @@
 	border-bottom: 1px solid black;
 	width: 150px;
 	height: 70px;
+}
+
+.slipUnder {
+	margin: 15px;
 }
