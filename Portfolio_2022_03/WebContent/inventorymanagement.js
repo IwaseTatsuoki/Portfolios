@@ -193,8 +193,19 @@ function ajaxGetInventory() {
 				var table_td = document.createElement("td");
 
 //				list.jsでソートするためにクラス名をつける
-				if(item == "price"){
+
+				if(item == "itemName"){
+					table_td.className = "itemName";
+				}else if(item == "price"){
 					table_td.className = "price";
+				}else if(item == "size"){
+					table_td.className = "size";
+				}else if(item == "color"){
+					table_td.className = "color";
+				}else if(item == "categoryName"){
+					table_td.className = "category";
+				}else if(item == "sexType"){
+					table_td.className = "sex";
 				}else if(item == "bestBefore"){
 					table_td.className = "date";
 				}else if(item == "inventoryCount"){
@@ -212,12 +223,10 @@ function ajaxGetInventory() {
 
 //		list.jsで必要な部分
 		var options = {
-				valueNames : [  'price',  "date", "inventoryCount", "shipmentPending" ]
+				valueNames : ["itemName",'price',"size","color","category","sex", "date", "inventoryCount", "shipmentPending" ]
 		};
 
 		var userList = new List('users', options);
-
-
 	})
 	.fail(function (data) {
 		// error
@@ -468,4 +477,63 @@ function entryArraivalItem(){
 		// error
 		console.log("error");
 	});
+}
+
+//一回クリックでfalseになって次クリックでtrue
+//表示したらfalseで非表示にする。
+var filter_flags = {filterItemName:true, filterSize:true, filterColor:true, filterCategory:true, filterSex:true};
+
+//フィルターの項目を表示させる。
+function areaBlock(h5) {
+
+	var block_element = document.getElementsByClassName(h5.id);
+
+	if(filter_flags[h5.id] == true){
+
+		block_element[0].style.display="block";
+
+		filter_flags[h5.id] = false;
+	}else{
+
+		block_element[0].style.display="none";
+
+		filter_flags[h5.id] = true;
+
+	}
+
+}
+
+function filter() {
+
+	var options = {
+			valueNames : ["itemName",'price',"size","color","category","sex", "date", "inventoryCount", "shipmentPending" ]
+	};
+
+	var userList = new List('users', options);
+
+//	チェックボックスの情報取得
+	var filter_checks = document.querySelectorAll("input[type='checkbox']");
+
+//	userList（在庫テーブル）にフィルターをかける。
+//	tableのtdをひとつずつ回すその中でチェックボックスも回す。
+	userList.filter(function(item) {
+
+		for(i = 0; i < filter_checks.length; i++){
+
+//			チェックボックスでチェックのついた要素のときだけテーブルの要素のクラス名に対応した値とチェックボックスの値を
+//			比較して同じであればtrueを返しuserListに戻す。
+			if(filter_checks[i].checked){
+
+//				[filter_checks[i].name]がチェックボックスのnameでテーブルのtdのクラス名と対応している。
+				if (item.values()[filter_checks[i].name] == filter_checks[i].value) {
+
+					return true;
+				}
+			}
+
+		}
+
+		return false;
+	});
+
 }

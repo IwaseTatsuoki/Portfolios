@@ -3,10 +3,34 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class ItemInfoExecute {
+
+	public static Set<String> getItemNames(Connection con, PreparedStatement ps, ResultSet rs)
+			throws Exception {
+
+		 Set<String> itemNames = new HashSet<>();
+
+		String sql = "select item_name from item";
+
+		ps = con.prepareStatement(sql);
+
+		rs = ps.executeQuery();
+
+
+		while (rs.next()) {
+
+			itemNames.add(rs.getString("item_name"));
+
+		}
+
+		return itemNames;
+
+	}
 
 	public static List<String> getSizes(Connection con, PreparedStatement ps, ResultSet rs)
 			throws Exception {

@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.ItemInfoBean;
 import bean.SlipBean;
 import bean.StoreBean;
+import model.ItemInfoDAO;
 import model.SqlException;
 import model.StoreItemSlipDAO;
 
@@ -47,6 +49,11 @@ public class StoreListServlet extends HttpServlet {
 
 				request.setAttribute("slipBeanList", slipBeanList);
 
+			}else if(url.equals("inventoryList.jsp")) {
+
+				ItemInfoBean itemInfoBean = new ItemInfoDAO().getItemInfo();
+
+				request.setAttribute("itemInfoBean", itemInfoBean);
 			}
 
 			List<StoreBean> storeBeanList = storeItemSlipDAO.getStoreList();

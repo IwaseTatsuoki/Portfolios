@@ -36,6 +36,8 @@ public class ItemInfoDAO {
 			//オートコミット無効
 			con.setAutoCommit(false);
 
+			itemInfoBean.setItemNames(ItemInfoExecute.getItemNames(con, ps, rs));
+
 			itemInfoBean.setSizes(ItemInfoExecute.getSizes(con, ps, rs));
 
 			itemInfoBean.setColors(ItemInfoExecute.getColors(con, ps, rs));
