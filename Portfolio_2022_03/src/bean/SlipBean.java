@@ -10,7 +10,7 @@ public class SlipBean {
 	private String storeName;
 
 	public SlipBean() {
-		// TODO 自動生成されたコンストラクター・スタブ
+
 	}
 
 	public SlipBean(String slipCode, String slipDate, String storeName) {

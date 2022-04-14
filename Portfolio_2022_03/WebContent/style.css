@@ -20,16 +20,47 @@
 
 /* shipping.jspとarraivalInput.jsp */
 
+/*arraivalInput.jspの上の伝票コードと店舗の選択画面。 */
+
 /* 送り元送り先入力エリア */
-.sendInputArea {
-	margin-bottom: 15px;
+#shipArraiContent {
+	margin: auto;
+	width: 1000px;
+}
+
+.tableArea {
+	width: 70%;
+	margin: auto;
+}
+
+.centerMain .labetTd {
+	text-align: left;
+}
+
+.labelTh {
+	padding-left: 8px;
+	background-color: #EEEEEE;
+	text-align: left;
+}
+
+.tableArea th {
+	width: 20%;
+}
+
+.tableArea td {
+	width: 70%
+}
+
+#entryButton {
+	margin-top: 20px;
+	margin-bottom: 30px;
 }
 
 #sameStore {
 	display: none;
 }
 
-#cloneModel {
+#firstTr {
 	display: none;
 }
 

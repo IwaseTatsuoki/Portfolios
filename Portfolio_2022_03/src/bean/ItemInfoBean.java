@@ -13,7 +13,7 @@ public class ItemInfoBean {
 	private List<String> sexs;
 
 	public ItemInfoBean() {
-		// TODO 自動生成されたコンストラクター・スタブ
+
 	}
 
 	public void setItemNames(Set<String> itemName) {

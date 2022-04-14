@@ -32,7 +32,7 @@
 </head>
 <body>
 
-	<div class="centerMain">
+	<div class="centerMain" id="shipArraiContent">
 
 		<%
 			if (erroMess != null) {
@@ -47,62 +47,64 @@
 
 		<form action="ArrivalInputServlet" method="post">
 
-			<div class="slipCode">
+			<table class="tableArea">
 
-				伝票コード <select class="select2" id="slipCode" name="slipCode" style="width: 400px;">
-					<%
-						for (SlipBean slipBean : slipBeanList) {
+				<tr>
 
-							out.println("<option value='" + slipBean.getSlipCode() + "," + slipBean.getStoreName() + "'>");
-							out.println(slipBean.getSlipCode() + "</option>");
-						}
-					%>
-				</select>
+					<th class="labelTh">伝票コード</th>
+					<td class="labelTd">
+						<select class="select2" id="slipCode" name="slipCode" style="text-align: left; width: 95%;">
+							<%
+								for (SlipBean slipBean : slipBeanList) {
 
-				<br>
+									out.println("<option value='" + slipBean.getSlipCode() + "," + slipBean.getStoreName() + "'>");
+									out.println(slipBean.getSlipCode() + "</option>");
+								}
+							%>
+						</select>
+					</td>
+				</tr>
+				<tr>
 
-				受け取り店舗<select class="select2" id="receiver" style="width: 200px;">
-					<%
-						for (StoreBean storeBean : storeBeanList) {
+					<th class="labelTh">受け取り店舗</th>
+					<td class="labelTd">
+						<select class="select2" id="receiver" style="text-align: left; width: 95%;">
+							<%
+								for (StoreBean storeBean : storeBeanList) {
 
-							out.println("<option value='" + storeBean.getStoreCode() + "'>");
-							out.println(storeBean.getStoreName() + "</option>");
-						}
-					%>
-				</select>
+									out.println("<option value='" + storeBean.getStoreCode() + "'>");
+									out.println(storeBean.getStoreName() + "</option>");
+								}
+							%>
+						</select>
+					</td>
+				</tr>
 
-				<input type="button" onclick="entryArraivalItem()" value="確定">
+			</table>
 
-			</div>
+
+			<input id="entryButton" type="button" onclick="entryArraivalItem()" value="確定">
 
 			<!-- 非表示。送り元と送り先が同じの時表示。 -->
 			<div id="sameStore">送り元と送り先が異なります。</div>
 
-			<div id="itemInputArea">
+			<table class="tableArea" id="itemInputArea">
+				<!--クローンの見本なので常に非表示エリア  -->
+				<tbody id="firstTr"></tbody>
 
-				<div id="firstUl">
-					<ul id="formUl">
+			</table>
 
-						<!--クローンの見本なので常に非表示エリア  -->
-						<div id="cloneModel"></div>
+			<!-- 非表示。送り元と送り先を選ぶと表示。 -->
+			<div class="underArea">
 
-					</ul>
-				</div>
+				<input type="button" value="入力商品追加" onclick="addForm()">
 
-				<!-- 非表示。送り元と送り先を選ぶと表示。 -->
-				<div class="underArea">
+				<input type="submit" value="出荷確認" onclick="return confi()">
 
-					<input type="button" value="入力商品追加" onclick="addForm()">
-
-					<input type="submit" value="出荷確認" onclick="return confi()">
-
-				</div>
 			</div>
-
 		</form>
 
 		<a href="index.jsp">トップページ</a>
-
 	</div>
 </body>
 </html>

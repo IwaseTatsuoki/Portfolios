@@ -7,8 +7,10 @@
 	List<StoreBean> storeBeanList = (List<StoreBean>) request.getAttribute("storeBeanList");
 %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html
+                            PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
 
 <!-- 自分のCSS -->
@@ -28,65 +30,71 @@
 <link rel="stylesheet" href="style.css">
 <title>Insert title here</title>
 </head>
+
 <body>
 
-	<div class="centerMain">
+	<div class="centerMain" id="shipArraiContent">
 
 		<h3>出荷処理</h3>
-
 		<form action="ShippingInputServlet" method="post">
 
-			<div class="sendInputArea">
-				送り元店舗 <select class="select2" id="sender" name="sender" style="width: 200px;">
-					<%
-						for (StoreBean storeBean : storeBeanList) {
+			<table class="tableArea">
 
-							out.println("<option value='" + storeBean.getStoreCode() + "'>");
-							out.println(storeBean.getStoreName() + "</option>");
-						}
-					%>
+				<tr>
 
-				</select> →送り先店舗 <select class="select2" id="receiver" name="sendingAddress" style="width: 200px;">
-					<%
-						for (StoreBean storeBean : storeBeanList) {
+					<th class="labelTh">送り元</th>
+					<td class="labelTd">
+						<select class="select2" id="sender" name="sender" style="text-align: left; width: 95%;">
+							<%
+								for (StoreBean storeBean : storeBeanList) {
+									out.println("<option value='" + storeBean.getStoreCode() + "'>");
+									out.println(storeBean.getStoreName() + "</option>");
+								}
+							%>
 
-							out.println("<option value='" + storeBean.getStoreCode() + "'>");
-							out.println(storeBean.getStoreName() + "</option>");
-						}
-					%>
+						</select>
+					</td>
+				</tr>
+				<tr>
 
-				</select>
+					<th class="labelTh">送り先</th>
+					<td class="labelTd">
+						<select class="select2" id="receiver" name="sendingAddress" style="text-align: left; width: 95%;">
+							<%
+								for (StoreBean storeBean : storeBeanList) {
+									out.println("<option value='" + storeBean.getStoreCode() + "'>");
+									out.println(storeBean.getStoreName() + "</option>");
+								}
+							%>
 
-				<input type="button" onclick="entryShippingItem()" value="確定">
-			</div>
+						</select>
+					</td>
+				</tr>
+			</table>
+
+			<input id="entryButton" type="button" onclick="entryShippingItem()" value="確定">
 
 			<!-- 非表示。送り元と送り先が同じの時表示。 -->
 			<div id="sameStore">送り元と送り先が同じ店舗になっています。</div>
 
-			<div id="itemInputArea">
+			<table class="tableArea" id="itemInputArea">
+				<!--クローンの見本なので常に非表示エリア  -->
+				<tbody id="firstTr"></tbody>
 
-				<div id="firstUl">
-					<ul id="formUl">
+			</table>
 
-						<!--クローンの見本なので常に非表示エリア  -->
-						<div id="cloneModel"></div>
+			<!-- 非表示。送り元と送り先を選ぶと表示。 -->
+			<div class="underArea">
 
-					</ul>
-				</div>
+				<input type="button" value="入力商品追加" onclick="addForm()">
 
-				<!-- 非表示。送り元と送り先を選ぶと表示。 -->
-				<div class="underArea">
+				<input type="submit" value="出荷確認" onclick="return confi()">
 
-					<input type="button" value="入力商品追加" onclick="addForm()">
-
-					<input type="submit" value="出荷確認" onclick="return confi()">
-
-				</div>
 			</div>
-
 		</form>
 
 		<a href="index.jsp">トップページ</a>
 	</div>
 </body>
+
 </html>

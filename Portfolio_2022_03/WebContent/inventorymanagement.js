@@ -5,31 +5,39 @@ var i = 1;
 function addForm() {
 
 	// 複製するHTML要素を取得
-	var form_ul = document.getElementById("formUl");
-	var first_form_li = document.getElementById("firstFormLi");
+	var first_tr = document.querySelectorAll("#firstTr tr");
 
 	// 複製
-	var clone_element = first_form_li.cloneNode(true);
+	var clone_item = first_tr[0].cloneNode(true);
+	clone_item.id = "tr_item" + i;
 
-	clone_element.id = "li"+ i
+	var clone_count = first_tr[1].cloneNode(true);
+	clone_count.id = "tr_count" + i;
 
 	// 複製したHTML要素をページに挿入
-	form_ul.appendChild(clone_element);
+	document.querySelector("#itemInputArea").appendChild(clone_item);
+	document.querySelector("#itemInputArea").appendChild(clone_count);
 
 	//見本にはnameがないのでつける。
-	clone_element.querySelector("select").name = "itemCode";
-	clone_element.querySelector("input").name = "itemCount";
+	clone_item.querySelector("select").name = "itemCode";
+	clone_count.querySelector("input").name = "itemCount";
+
+//	削除ボタンを追加するtdを作成。
+	var td_delete = document.createElement("td");
+	td_delete.style.width = "10%";
+	td_delete.setAttribute("rowspan", "2")
+	clone_item.appendChild(td_delete);
 
 //	削除ボタンを同じliに追加するために取得。
-	var parent = document.getElementById('li' + i);
+
 
 	//フォーム消去ボタン
-	var button_data = document.createElement('button');
+	var button_data = document.createElement('input');
+	button_data.type = "button";
 	button_data.id = i;
-	button_data.onclick = function () { deleteBtn(this); }
-	button_data.innerHTML = '削除';
-	parent.appendChild(button_data);
-
+	button_data.setAttribute('onclick', 'deleteBtn(this)');
+	button_data.value = '削除';
+	td_delete.appendChild(button_data);
 
 	i++;
 }
@@ -38,14 +46,13 @@ function addForm() {
 //削除ボタンのidも変数iなのでほかのフォームタグのidと一致する
 function deleteBtn(target) {
 	var target_id = target.id;
-	var ul_id = document.getElementById('formUl');
-	var text_id = document.getElementById('text' + target_id);
-	var num_id = document.getElementById('num' + target_id);
-	var li_id = document.getElementById('li' + target_id);
-	var tgt_id = document.getElementById(target_id);
+	var delete_tr_item = document.getElementById('tr_item' + target_id);
+	var delete_tr_count = document.getElementById('tr_count' + target_id);
+	console.log(delete_tr_item);
+	console.log(delete_tr_count);
 
-	li_id.removeChild(tgt_id);
-	ul_id.removeChild(li_id);
+	delete_tr_item.remove();
+	delete_tr_count.remove();
 }
 
 //内容確認ダイアログ
@@ -245,29 +252,35 @@ $(function () {
 //shippingInputのajax
 //送り元と送り先店舗を入力すると送り先の店舗の在庫にある商品が選択できる
 //selectを作る
-function entryShippingItem(){
+function entryShippingItem() {
 
 
-//	確定を押すと一度全部の商品入力ボックスを消す。
-	var li_all = document.querySelectorAll("li");
+	//	確定を押すと一度全部の商品入力ボックスを消す。
+//	コピーするための元のth、tdと追加したth、tdを取得
+	var tr_all = document.querySelectorAll("#itemInputArea tr");
 
-	if(li_all.length > 0){
+	var first_tr_all = document.querySelectorAll("#firstTr th, #firstTr td");
 
-		for (let i = 0; i < li_all.length; i++) {
-			li_all[i].remove();
-
+//	上のものすべて消す。
+	if(tr_all.length > 0 && first_tr_all.length > 0){
+		for (const item of tr_all) {
+			item.remove();
+		}
+		for (const item of first_tr_all) {
+			console.log(item);
+			item.remove();
 		}
 	}
 
-//	追加と確定も一度非表示にする
-	var under_area =  document.querySelectorAll(".underArea input");
+	//	追加と確定も一度非表示にする
+	var under_area = document.querySelectorAll(".underArea input");
 	under_area[0].style.display = "none";
 	under_area[1].style.display = "none";
 
 	var sender = document.getElementById("sender").value;
 	var receiver = document.getElementById("receiver").value;
 
-	if(sender == receiver){
+	if (sender == receiver) {
 		document.getElementById("sameStore").style.display = "block";
 		return;
 	}
@@ -289,65 +302,93 @@ function entryShippingItem(){
 		var data_stringify = JSON.stringify(data);
 		var data_json = JSON.parse(data_stringify);
 
-//		追加するエリアを取得
+		//		追加するエリアを取得
 		var input_area = document.getElementById("inputArea");
 
 		document.getElementById("sameStore").style.display = "none";
 
 
-//		店舗を選んでいないと入力ボックスの追加と出荷確定ボタンが出ないようにする。
-//		店舗を選ぶと出る。
+		//		店舗を選んでいないと入力ボックスの追加と出荷確定ボタンが出ないようにする。
+		//		店舗を選ぶと出る。
 
-		under_area[0].style.display = "block";
-		under_area[1].style.display = "block";
-		under_area[0].style.margin = "5px auto";
-		under_area[1].style.margin = "10px auto";
+		under_area[0].style.display = "inline";
+		under_area[1].style.display = "inline";
+		under_area[0].style.margin = "5px 10px";
+		under_area[1].style.margin = "10px 10px";
 
-//		見本の入力ボックスを一つ作りそれを複製する形で入力ボックスを増やす。
-//		見本は隠しnameもつけない。
-		var clone_model = document.getElementById("cloneModel");
-		var form_ul = document.getElementById("formUl");
+		//		見本の入力ボックスを一つ作りそれを複製する形で入力ボックスを増やす。
+		//		見本は隠しnameもつけない。
 
-		var form_ul_li = document.createElement("li");
-		form_ul_li.className = "formLi";
-		form_ul_li.id = "firstFormLi";
-		clone_model.appendChild(form_ul_li);
 
-		var form_ul_select = document.createElement("select");
-		form_ul_select.style.width = "40px";
-		form_ul_select.style.marginRight = "10px";
-		form_ul_li.appendChild(form_ul_select);
+//		item入力
+		var div_first_tr = document.getElementById("firstTr");
+
+		var first_tr_item = document.createElement("tr");
+		div_first_tr.appendChild(first_tr_item);
+
+		var first_tr_item_th = document.createElement("th");
+		first_tr_item_th.textContent = "商品コード";
+		first_tr_item_th.className = "labelTh";
+		first_tr_item.appendChild(first_tr_item_th);
+
+		var first_tr_item_td = document.createElement("td");
+		first_tr_item_td.className = "labelTd";
+		first_tr_item.appendChild(first_tr_item_td);
+
+//		select追加
+		var first_tr_select = document.createElement("select");
+		first_tr_select.style.width ="95%";
+		first_tr_select.style.padding ="5px";
+		first_tr_select.style.border ="1";
+		first_tr_select.style.margin ="0px";
+		first_tr_item_td.appendChild(first_tr_select);
 
 		for (var row in data_json) {
 			var option = document.createElement("option");
 			option.value = data_json[row]["itemCode"];
 			option.text = data_json[row]["itemCode"];
-			form_ul_select.appendChild(option);
+			first_tr_select.appendChild(option);
 		}
 
-		var form_ul_number = document.createElement("input");
-		form_ul_number.type = "number";
-		form_ul_number.width = "60px";
-		form_ul_number.value = 1;
-		form_ul_number.min = "1";
-		form_ul_number.step = "1";
-		form_ul_li.appendChild(form_ul_number);
+//		商品個数入力
+		var first_tr_count = document.createElement("tr");
+		div_first_tr.appendChild(first_tr_count);
+
+		var first_tr_count_th = document.createElement("th");
+		first_tr_count_th.textContent = "商品数";
+		first_tr_count_th.className = "labelTh";
+		first_tr_count.appendChild(first_tr_count_th);
+
+		var first_tr_count_td = document.createElement("td");
+		first_tr_count_td.className = "labelTd";
+		first_tr_count.appendChild(first_tr_count_td);
+
+//		number追加
+		var first_tr_number = document.createElement("input");
+		first_tr_number.style.width ="92%";
+		first_tr_number.style.padding ="5px";
+		first_tr_number.style.border ="1";
+		first_tr_number.style.margin ="0px";
+		first_tr_number.type = "number";
+		first_tr_number.value = 1;
+		first_tr_number.min = "1";
+		first_tr_number.step = "1";
+
+		first_tr_count_td.appendChild(first_tr_number);
 
 		// 複製するHTML要素を取得
 
-		var first_form_li = document.getElementById("firstFormLi");
-
 		// 複製
-		var clone_element = first_form_li.cloneNode(true);
+		var clone_item = first_tr_item.cloneNode(true);
+		var clone_count = first_tr_count.cloneNode(true);
 
 		// 複製したHTML要素をページに挿入
-		form_ul.appendChild(clone_element);
+		document.querySelector("#itemInputArea").appendChild(clone_item);
+		document.querySelector("#itemInputArea").appendChild(clone_count);
 
 		//見本にはnameがないのでつける。
-		clone_element.querySelector("select").name = "itemCode";
-		clone_element.querySelector("input").name = "itemCount";
-
-
+		clone_item.querySelector("select").name = "itemCode";
+		clone_count.querySelector("input").name = "itemCount";
 	})
 	.fail(function (data) {
 		// error
@@ -361,14 +402,20 @@ function entryShippingItem(){
 function entryArraivalItem(){
 
 
-//	確定を押すと一度全部の商品入力ボックスを消す。
-	var li_all = document.querySelectorAll("li");
+	//	確定を押すと一度全部の商品入力ボックスを消す。
+//	コピーするための元のth、tdと追加したth、tdを取得
+	var tr_all = document.querySelectorAll("#itemInputArea tr");
 
-	if(li_all.length > 0){
+	var first_tr_all = document.querySelectorAll("#firstTr th, #firstTr td");
 
-		for (let i = 0; i < li_all.length; i++) {
-			li_all[i].remove();
-
+//	上のものすべて消す。
+	if(tr_all.length > 0 && first_tr_all.length > 0){
+		for (const item of tr_all) {
+			item.remove();
+		}
+		for (const item of first_tr_all) {
+			console.log(item);
+			item.remove();
 		}
 	}
 
@@ -427,50 +474,76 @@ function entryArraivalItem(){
 		under_area[0].style.margin = "5px auto";
 		under_area[1].style.margin = "10px auto";
 
-//		見本の入力ボックスを一つ作りそれを複製する形で入力ボックスを増やす。
-//		見本は隠しnameもつけない。
-		var clone_model = document.getElementById("cloneModel");
-		var form_ul = document.getElementById("formUl");
 
-		var form_ul_li = document.createElement("li");
-		form_ul_li.className = "formLi";
-		form_ul_li.id = "firstFormLi";
-		clone_model.appendChild(form_ul_li);
+//		item入力
+		var div_first_tr = document.getElementById("firstTr");
 
-		var form_ul_select = document.createElement("select");
-		form_ul_select.style.width = "40px";
-		form_ul_select.style.marginRight = "10px";
-		form_ul_li.appendChild(form_ul_select);
+		var first_tr_item = document.createElement("tr");
+		div_first_tr.appendChild(first_tr_item);
+
+		var first_tr_item_th = document.createElement("th");
+		first_tr_item_th.textContent = "商品コード";
+		first_tr_item_th.className = "labelTh";
+		first_tr_item.appendChild(first_tr_item_th);
+
+		var first_tr_item_td = document.createElement("td");
+		first_tr_item_td.className = "labelTd";
+		first_tr_item.appendChild(first_tr_item_td);
+
+//		select追加
+		var first_tr_select = document.createElement("select");
+		first_tr_select.style.width ="95%";
+		first_tr_select.style.padding ="5px";
+		first_tr_select.style.border ="1";
+		first_tr_select.style.margin ="0px";
+		first_tr_item_td.appendChild(first_tr_select);
 
 		for (var row in data_json) {
 			var option = document.createElement("option");
 			option.value = data_json[row]["itemCode"];
 			option.text = data_json[row]["itemCode"];
-			form_ul_select.appendChild(option);
+			first_tr_select.appendChild(option);
 		}
 
-		var form_ul_number = document.createElement("input");
-		form_ul_number.type = "number";
-		form_ul_number.width = "60px";
-		form_ul_number.value = 1;
-		form_ul_number.min = "1";
-		form_ul_number.step = "1";
-		form_ul_li.appendChild(form_ul_number);
+//		商品個数入力
+		var first_tr_count = document.createElement("tr");
+		div_first_tr.appendChild(first_tr_count);
+
+		var first_tr_count_th = document.createElement("th");
+		first_tr_count_th.textContent = "商品数";
+		first_tr_count_th.className = "labelTh";
+		first_tr_count.appendChild(first_tr_count_th);
+
+		var first_tr_count_td = document.createElement("td");
+		first_tr_count_td.className = "labelTd";
+		first_tr_count.appendChild(first_tr_count_td);
+
+//		number追加
+		var first_tr_number = document.createElement("input");
+		first_tr_number.style.width ="92%";
+		first_tr_number.style.padding ="5px";
+		first_tr_number.style.border ="1";
+		first_tr_number.style.margin ="0px";
+		first_tr_number.type = "number";
+		first_tr_number.value = 1;
+		first_tr_number.min = "1";
+		first_tr_number.step = "1";
+
+		first_tr_count_td.appendChild(first_tr_number);
 
 		// 複製するHTML要素を取得
 
-		var first_form_li = document.getElementById("firstFormLi");
-
 		// 複製
-		var clone_element = first_form_li.cloneNode(true);
+		var clone_item = first_tr_item.cloneNode(true);
+		var clone_count = first_tr_count.cloneNode(true);
 
 		// 複製したHTML要素をページに挿入
-		form_ul.appendChild(clone_element);
+		document.querySelector("#itemInputArea").appendChild(clone_item);
+		document.querySelector("#itemInputArea").appendChild(clone_count);
 
 		//見本にはnameがないのでつける。
-		clone_element.querySelector("select").name = "itemCode";
-		clone_element.querySelector("input").name = "itemCount";
-
+		clone_item.querySelector("select").name = "itemCode";
+		clone_count.querySelector("input").name = "itemCount";
 
 	})
 	.fail(function (data) {
