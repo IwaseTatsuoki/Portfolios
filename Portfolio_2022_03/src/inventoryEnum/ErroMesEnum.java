@@ -11,8 +11,6 @@ public enum ErroMesEnum {
 	private final String mes;
 
 	private ErroMesEnum(final String mes) {
-		// TODO 自動生成されたコンストラクター・スタブ
-
 		this.mes = mes;
 	}
 

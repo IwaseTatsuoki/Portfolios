@@ -123,8 +123,6 @@ public class ArraivalExcute {
 
 		int res = 0;
 
-
-
 		String sql = "update shipping_slip set shipping_slip.decision_flag = ? WHERE shipping_slip.slip_code = ?";
 
 		ps = con.prepareStatement(sql);
@@ -141,5 +139,4 @@ public class ArraivalExcute {
 			throw new Exception();
 		}
 	}
-
 }

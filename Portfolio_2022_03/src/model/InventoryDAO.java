@@ -88,13 +88,10 @@ public class InventoryDAO {
 
 			throw sqlException;
 
-
 		}finally{
 
 			DButil.closeDB(rs, ps, con);
 
 		}
 	}
-
-
 }

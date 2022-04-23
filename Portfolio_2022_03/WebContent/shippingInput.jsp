@@ -24,7 +24,9 @@
 <!-- Select2日本語化 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/i18n/ja.js"></script>
 <!-- 自分のjs -->
-<script src="inventorymanagement.js"></script>
+<script src="inventorymanagement.js" ></script>
+<script src="methods.js" ></script>
+
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="style.css">

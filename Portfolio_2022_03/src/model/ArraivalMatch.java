@@ -47,6 +47,4 @@ public class ArraivalMatch {
 		return true;
 
 	}
-
-
 }

@@ -30,7 +30,9 @@
 <!-- list.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 <!-- 自分のjs -->
-<script src="inventorymanagement.js"></script>
+<script src="inventorymanagement.js" ></script>
+<script src="methods.js" ></script>
+
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 

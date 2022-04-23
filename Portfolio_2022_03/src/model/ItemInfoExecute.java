@@ -13,7 +13,7 @@ public class ItemInfoExecute {
 	public static Set<String> getItemNames(Connection con, PreparedStatement ps, ResultSet rs)
 			throws Exception {
 
-		 Set<String> itemNames = new HashSet<>();
+		Set<String> itemNames = new HashSet<>();
 
 		String sql = "select item_name from item";
 
@@ -43,7 +43,6 @@ public class ItemInfoExecute {
 
 		rs = ps.executeQuery();
 
-
 		while (rs.next()) {
 
 			sizes.add(rs.getString("size_type"));
@@ -64,7 +63,6 @@ public class ItemInfoExecute {
 		ps = con.prepareStatement(sql);
 
 		rs = ps.executeQuery();
-
 
 		while (rs.next()) {
 
@@ -87,7 +85,6 @@ public class ItemInfoExecute {
 
 		rs = ps.executeQuery();
 
-
 		while (rs.next()) {
 
 			categorys.add(rs.getString("category_type"));
@@ -109,7 +106,6 @@ public class ItemInfoExecute {
 
 		rs = ps.executeQuery();
 
-
 		while (rs.next()) {
 
 			sexs.add(rs.getString("sex_type"));
@@ -119,6 +115,4 @@ public class ItemInfoExecute {
 		return sexs;
 
 	}
-
-
 }

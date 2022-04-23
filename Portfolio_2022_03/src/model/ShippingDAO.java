@@ -19,8 +19,6 @@ public class ShippingDAO {
 	public void shippingDB(List<ItemBean> slipItemBeanList, String sender, String sendingAddress, String uuidString)
 			throws SqlException {
 
-
-
 		//DB取得結果を格納するリスト
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -59,14 +57,9 @@ public class ShippingDAO {
 
 			throw sqlException;
 
-
 		}finally{
 
 			DButil.closeDB(rs, ps, con);
 		}
-
-
 	}
-
-
 }

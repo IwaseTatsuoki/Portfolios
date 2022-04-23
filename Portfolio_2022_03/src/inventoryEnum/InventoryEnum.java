@@ -12,16 +12,10 @@ public enum InventoryEnum {
 	NONWAREHOUSE(0),
 	WAREHOUSE(1);
 
-
-
-
 	private final int flag;
 
-
 	private InventoryEnum(final int flag) {
-		// TODO 自動生成されたコンストラクター・スタブ
 		this.flag = flag;
-
 	}
 
 	public int getFlag() {

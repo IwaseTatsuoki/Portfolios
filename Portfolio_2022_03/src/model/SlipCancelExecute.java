@@ -33,9 +33,7 @@ public class SlipCancelExecute {
 				throw new Exception();
 			}
 		}
-
 	}
-
 
 	public static void cancelShippingSlip(Connection con, PreparedStatement ps, String[] cancelSlipCodes)
 			throws Exception {

@@ -11,8 +11,6 @@ public class SqlException extends Exception {
 	private final String ERRORMESS = ErroMesEnum.DBERRORMES.getMes();
 
 	public SqlException(String mess) {
-		// TODO 自動生成されたコンストラクター・スタブ
-
 		super(mess);
 	}
 

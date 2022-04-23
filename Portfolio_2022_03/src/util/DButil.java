@@ -14,7 +14,6 @@ public class DButil {
 
 	public static void rollback(Connection con) throws SqlException {
 
-
 		//一つでも処理がされない場合はロールバック
 		try {
 
@@ -28,13 +27,9 @@ public class DButil {
 			JOptionPane.showMessageDialog(jFrame, "重大なエラーが発生しました");
 
 		}
-
 	}
 
-
-
 	public static void closeDB(ResultSet rs, PreparedStatement ps, Connection con) throws SqlException {
-
 
 		try{
 
@@ -51,7 +46,6 @@ public class DButil {
 				con.close();
 			}
 
-
 		}catch(SQLException e){
 
 			//画面をとめてそのまま
@@ -60,7 +54,5 @@ public class DButil {
 			JOptionPane.showMessageDialog(jFrame, "重大なエラーが発生しました");
 
 		}
-
 	}
-
 }

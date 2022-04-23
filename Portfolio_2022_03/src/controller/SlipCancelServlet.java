@@ -22,15 +22,14 @@ public class SlipCancelServlet extends HttpServlet {
 	 */
 	public SlipCancelServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 	}
 

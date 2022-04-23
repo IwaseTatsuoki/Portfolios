@@ -18,8 +18,8 @@ import util.DButil;
 
 public class SlipCancelDAO {
 
-//	slipList.jsp伝票キャンセルの画面で取得した店舗コードの店舗が所持している伝票を取得するときに使う。
-//	SlipListServletで呼び出し
+	//	slipList.jsp伝票キャンセルの画面で取得した店舗コードの店舗が所持している伝票を取得するときに使う。
+	//	SlipListServletで呼び出し
 	public List<SlipBean> getSlip (String storeCode) throws SqlException {
 
 		List<SlipBean> slipBeanList = new LinkedList<SlipBean>();
@@ -90,11 +90,7 @@ public class SlipCancelDAO {
 			DButil.closeDB(rs, ps, con);
 
 		}
-
-
 	}
-
-
 
 	public void slipCancel (String[] cancelSlipCodes) throws SqlException {
 
@@ -119,10 +115,7 @@ public class SlipCancelDAO {
 
 			SlipCancelExecute.cancelShippingSlip(con, ps, cancelSlipCodes);
 
-
 			con.commit();
-
-
 
 		}catch(Exception ex){
 
@@ -135,14 +128,10 @@ public class SlipCancelDAO {
 
 			throw sqlException;
 
-
 		}finally{
 
 			DButil.closeDB(rs, ps, con);
 
 		}
-
-
 	}
-
 }

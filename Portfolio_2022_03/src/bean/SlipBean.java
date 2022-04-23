@@ -5,8 +5,8 @@ public class SlipBean {
 
 	private String slipCode;
 	private String slipDate;
-//	cancelの時は送り元店舗。
-//	出荷時の伝票一覧持ってくるときStoreItemSlipDAOでは受け取り店舗。
+	//	cancelの時は送り元店舗。
+	//	出荷時の伝票一覧持ってくるときStoreItemSlipDAOでは受け取り店舗。
 	private String storeName;
 
 	public SlipBean() {

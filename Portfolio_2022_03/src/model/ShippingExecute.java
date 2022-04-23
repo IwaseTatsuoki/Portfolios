@@ -41,9 +41,7 @@ public class ShippingExecute  {
 				throw new Exception();
 			}
 		}
-
 	}
-
 
 	public static void shippingSlipInsert(Connection con, PreparedStatement ps, String uuidString, String sender, String sendingAddress)
 			throws Exception {
@@ -67,10 +65,7 @@ public class ShippingExecute  {
 		ps.setString(3, sender);
 		ps.setString(4, sendingAddress);
 
-
 		res = ps.executeUpdate();
-
-
 
 		if(res <= 0) {
 
@@ -107,7 +102,5 @@ public class ShippingExecute  {
 				throw new Exception();
 			}
 		}
-
 	}
-
 }

@@ -50,8 +50,6 @@ public class ItemInfoDAO {
 
 			return itemInfoBean;
 
-
-
 		}catch(Exception ex){
 
 			//DB登録中にエラーが出ればロールバック
@@ -63,12 +61,10 @@ public class ItemInfoDAO {
 
 			throw sqlException;
 
-
 		}finally{
 
 			DButil.closeDB(rs, ps, con);
 
 		}
 	}
-
 }
